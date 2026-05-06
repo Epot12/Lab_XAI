@@ -1,0 +1,126 @@
+############################################
+# PYTHON CORE
+############################################
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+
+############################################
+# VIRTUAL ENVIRONMENTS
+############################################
+
+venv/
+env/
+ENV/
+.env/
+.venv/
+
+############################################
+# JUPYTER / COLAB NOTEBOOKS
+############################################
+
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Colab autosave / temporary exports
+*.ipynb.save
+*.nbconvert.ipynb
+
+############################################
+# GOOGLE COLAB SPECIFIC
+############################################
+
+# Colab runtime artifacts
+config.ipynb
+drive/MyDrive/
+sample_data/
+
+############################################
+# DATA FILES
+############################################
+
+# Common datasets (avoid committing large data)
+*.csv
+*.parquet
+*.h5
+*.hdf5
+*.npy
+*.npz
+*.pkl
+*.pickle
+
+# keeping example files if needed
+!example.csv
+
+############################################
+# MODELS / OUTPUTS (ML artifacts)
+############################################
+
+models/
+checkpoints/
+outputs/
+results/
+logs/
+
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+############################################
+# PYCHARM
+############################################
+
+.idea/
+*.iws
+*.iml
+*.ipr
+
+############################################
+# VS CODE
+############################################
+
+.vscode/
+.history/
+
+############################################
+# VIM / NEOVIM
+############################################
+
+*.swp
+*.swo
+*.swn
+*.tmp
+*.bak
+
+############################################
+# SYSTEM FILES
+############################################
+
+.DS_Store
+Thumbs.db
+
+############################################
+# ENV VARIABLES / SECRETS
+############################################
+
+.env
+.env.local
+.env.*.local
+
+# API keys / secrets
+secrets.json
+credentials.json
+
+############################################
+# LOG FILES
+############################################
+
+*.log
