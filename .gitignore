@@ -124,3 +124,13 @@ credentials.json
 ############################################
 
 *.log
+
+# SHAP / interpretability artifacts
+*.shap
+*.explanation.json
+
+# TensorBoard
+runs/
+
+# UV / lock artifacts
+.uv/
