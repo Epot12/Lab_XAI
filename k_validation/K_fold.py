@@ -1,1 +1,92 @@
-# this file will contain the pytorch implementation of k fold cross validation
+
+import time
+import numpy as np
+import torch
+from sklearn.model_selection import KFold
+from sklearn.metrics import mean_absolute_error, mean_absolute_percentage_error, mean_squared_error
+from sklearn.preprocessing import StandardScaler
+from joblib import dump
+
+# Importing utils
+from data_processing import load_and_preprocess_data
+from model import train_pytorch_model
+
+
+def k_fold_val():
+    print("Data loading and processing...")
+    X, y = load_and_preprocess_data()
+    input_dim = X.shape[1]
+
+    # setting KFold
+    kf = KFold(n_splits=10, shuffle=False)
+
+    fold = -1
+    y_all_pred = np.zeros(y.shape)
+    f = open("MAE_nn_chrono_pytorch.txt", "w")
+    t1 = time.time()
+
+    for train_index, test_index in kf.split(X):
+        fold += 1
+        print(f"\n--- Starting FOLD {fold} ---")
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = y[train_index], y[test_index]
+
+        # Standardization
+        scaler = StandardScaler()
+        X_train = scaler.fit_transform(X_train)
+        X_test = scaler.transform(X_test)
+
+        f.write('TRAIN: ' + str(train_index) + '\n')
+        f.write('TEST: ' + str(test_index) + '\n')
+        dump(scaler, f'scaler_chrono_pt_{fold}.save')
+
+        # training neural network
+        model, device = train_pytorch_model(X_train, y_train, input_dim, epochs=1000, patience=10)
+
+        # Saving the model (Standard PyTorch .pth format)
+        torch.save(model.state_dict(), f'nn_chrono_model_pt_{fold}.pth')
+
+        # Overall evaluation on the fold
+        model.eval()
+        criterion = torch.nn.MSELoss()
+        with torch.no_grad():
+            # Move the complete fold data to the device for final evaluation
+            X_train_t = torch.tensor(X_train, dtype=torch.float32).to(device)
+            y_train_t = torch.tensor(y_train, dtype=torch.float32).view(-1, 1).to(device)
+            X_test_t = torch.tensor(X_test, dtype=torch.float32).to(device)
+            y_test_t = torch.tensor(y_test, dtype=torch.float32).view(-1, 1).to(device)
+
+            train_pred = model(X_train_t)
+            test_pred = model(X_test_t)
+
+            train_mse = criterion(train_pred, y_train_t).item()
+            test_mse = criterion(test_pred, y_test_t).item()
+
+            # Converts predictions to NumPy format for sklearn
+            y_pred_np = test_pred.cpu().numpy().flatten()
+
+        print('Train MSE: %.3f, Test MSE: %.3f' % (train_mse, test_mse))
+        t2 = time.time()
+
+        # Saving metrics
+        f.write(f'MAE = {mean_absolute_error(y_test, y_pred_np)}\n')
+        f.write(f'MAPE = {mean_absolute_percentage_error(y_test, y_pred_np)}\n')
+        f.write(f'MSE = {mean_squared_error(y_test, y_pred_np)}\n')
+        f.write(f'Execution time = {t2 - t1}\n')
+
+        # adding global predictions
+        for i in range(len(test_index)):
+            y_all_pred[test_index[i]] = y_pred_np[i]
+
+    # global metrics OOF (Out Of Fold)
+    t3 = time.time()
+    f.write(f'\nGlobal MAE = {mean_absolute_error(y, y_all_pred)}')
+    f.write(f'\nGlobal MAPE = {mean_absolute_percentage_error(y, y_all_pred)}')
+    f.write(f'\nGlobal MSE = {mean_squared_error(y, y_all_pred)}')
+    f.write(f'\nTime = {t3 - t1}')
+    f.close()
+
+    np.savetxt("nn_y_all_pred_chrono_pytorch.txt", y_all_pred)
+    print("\nExecution successfully completed!")
+
+
