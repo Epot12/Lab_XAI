@@ -8,21 +8,18 @@ from sklearn.preprocessing import StandardScaler
 from joblib import dump
 
 # Importing utils
-from data_processing import load_and_preprocess_data
-from model import train_pytorch_model
+from utils import train_pytorch_model
 
 
-def k_fold_val():
-    print("Data loading and processing...")
-    X, y = load_and_preprocess_data()
+def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_name="exp_1"):
     input_dim = X.shape[1]
 
     # setting KFold
-    kf = KFold(n_splits=10, shuffle=False)
+    kf = KFold(n_splits=n_splits, shuffle=False)
 
     fold = -1
     y_all_pred = np.zeros(y.shape)
-    f = open("MAE_nn_chrono_pytorch.txt", "w")
+    f = open(f"MAE_{exp_name}.txt", "w")
     t1 = time.time()
 
     for train_index, test_index in kf.split(X):
@@ -38,13 +35,14 @@ def k_fold_val():
 
         f.write('TRAIN: ' + str(train_index) + '\n')
         f.write('TEST: ' + str(test_index) + '\n')
-        dump(scaler, f'scaler_chrono_pt_{fold}.save')
+        dump(scaler, f'scaler_{exp_name}_{fold}.save')
 
         # training neural network
-        model, device = train_pytorch_model(X_train, y_train, input_dim, epochs=1000, patience=10)
+        model, device = train_pytorch_model(X_train, y_train, input_dim, model_class,
+            epochs=epochs, patience=patience)
 
         # Saving the model (Standard PyTorch .pth format)
-        torch.save(model.state_dict(), f'nn_chrono_model_pt_{fold}.pth')
+        torch.save(model.state_dict(), f'model_{exp_name}_{fold}.pth')
 
         # Overall evaluation on the fold
         model.eval()
@@ -80,13 +78,29 @@ def k_fold_val():
 
     # global metrics OOF (Out Of Fold)
     t3 = time.time()
-    f.write(f'\nGlobal MAE = {mean_absolute_error(y, y_all_pred)}')
-    f.write(f'\nGlobal MAPE = {mean_absolute_percentage_error(y, y_all_pred)}')
-    f.write(f'\nGlobal MSE = {mean_squared_error(y, y_all_pred)}')
+
+    # saving metrics in variables
+    global_mae = mean_absolute_error(y, y_all_pred)
+    global_mape = mean_absolute_percentage_error(y, y_all_pred)
+    global_mse = mean_squared_error(y, y_all_pred)
+
+    # using variables to write in log files
+    f.write(f'\nGlobal MAE = {global_mae}')
+    f.write(f'\nGlobal MAPE = {global_mape}')
+    f.write(f'\nGlobal MSE = {global_mse}')
     f.write(f'\nTime = {t3 - t1}')
     f.close()
 
-    np.savetxt("nn_y_all_pred_chrono_pytorch.txt", y_all_pred)
-    print("\nExecution successfully completed!")
+    np.savetxt(f"y_pred_{exp_name}.txt", y_all_pred)
+
+    print(f"\nExecution '{exp_name}' successfully completed!")
+
+    return {
+        "MAE": global_mae,
+        "MAPE": global_mape,
+        "MSE": global_mse,
+        "predictions": y_all_pred,
+        "execution_time": t3 - t1
+    }
 
 
