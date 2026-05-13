@@ -134,3 +134,10 @@ runs/
 
 # UV / lock artifacts
 .uv/
+
+# data
+# Ignore all contents of the Data folder
+Data/*
+
+# However, it keeps the Data folder empty within the project
+!Data/.gitkeep
