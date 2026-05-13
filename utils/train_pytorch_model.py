@@ -1,7 +1,9 @@
 import torch
 import copy
+import numpy as np
 from torch import nn, optim
 from torch.utils.data import TensorDataset, DataLoader
+from tqdm import tqdm
 
 def train_pytorch_model(X_train, y_train, input_dim, model_class, epochs=1000, patience=10, batch_size=32):
 
@@ -30,8 +32,12 @@ def train_pytorch_model(X_train, y_train, input_dim, model_class, epochs=1000, p
     patience_counter = 0
     best_model_weights = None
 
-    for epoch in range(epochs):
+    history = {'train_loss': [], 'val_loss': []}
+    pbar = tqdm(range(epochs), desc="Training", leave=False)
+
+    for epoch in pbar:
         model.train()  # Training Mode (Dropout Enabled)
+        batch_losses = []
         for batch_X, batch_y in train_loader:
             optimizer.zero_grad()
             predictions = model(batch_X)
@@ -39,11 +45,19 @@ def train_pytorch_model(X_train, y_train, input_dim, model_class, epochs=1000, p
             loss.backward()
             optimizer.step()
 
+            batch_losses.append(loss.item())
+
+        epoch_train_loss = np.mean(batch_losses)
+
         # Validation and Early Stopping
         model.eval()  # Inference Mode (disable Dropout)
         with torch.no_grad():
             val_predictions = model(X_val_t)
             val_loss = criterion(val_predictions, y_val_t).item()
+
+        history['train_loss'].append(epoch_train_loss)
+        history['val_loss'].append(val_loss)
+        pbar.set_postfix({'Train MSE': f'{epoch_train_loss:.4f}', 'Val MSE': f'{val_loss:.4f}'})
 
         if val_loss < best_val_loss:
             best_val_loss = val_loss
@@ -59,4 +73,4 @@ def train_pytorch_model(X_train, y_train, input_dim, model_class, epochs=1000, p
     if best_model_weights is not None:
         model.load_state_dict(best_model_weights)
 
-    return model, device
+    return model, device, history
