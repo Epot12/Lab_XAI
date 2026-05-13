@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 from joblib import dump
 
 # Importing utils
-from utils import train_pytorch_model
+from utils.train_pytorch_model import *
 
 
 def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_name="exp_1"):
@@ -19,11 +19,13 @@ def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_nam
 
     fold = -1
     y_all_pred = np.zeros(y.shape)
+    all_histories = []
     f = open(f"MAE_{exp_name}.txt", "w")
-    t1 = time.time()
+    t_start_global = time.time()
 
     for train_index, test_index in kf.split(X):
         fold += 1
+        t_fold_start = time.time()
         print(f"\n--- Starting FOLD {fold} ---")
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = y[train_index], y[test_index]
@@ -38,8 +40,10 @@ def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_nam
         dump(scaler, f'scaler_chrono_{exp_name}_{fold}.save')
 
         # training neural network
-        model, device = train_pytorch_model(X_train, y_train, input_dim, model_class,
+        model, device, history = train_pytorch_model(X_train, y_train, input_dim, model_class,
             epochs=epochs, patience=patience)
+        
+        all_histories.append(history)
 
         # Saving the model (Standard PyTorch .pth format)
         torch.save(model.state_dict(), f'model_{exp_name}_{fold}.pth')
@@ -64,20 +68,26 @@ def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_nam
             y_pred_np = test_pred.cpu().numpy().flatten()
 
         print('Train MSE: %.3f, Test MSE: %.3f' % (train_mse, test_mse))
-        t2 = time.time()
+        t_fold_end = time.time()
 
         # Saving metrics
         f.write(f'MAE = {mean_absolute_error(y_test, y_pred_np)}\n')
         f.write(f'MAPE = {mean_absolute_percentage_error(y_test, y_pred_np)}\n')
         f.write(f'MSE = {mean_squared_error(y_test, y_pred_np)}\n')
-        f.write(f'Execution time = {t2 - t1}\n')
+        f.write(f'Execution time for Fold {fold} = {t_fold_end - t_fold_start}\n')
 
         # adding global predictions
         for i in range(len(test_index)):
             y_all_pred[test_index[i]] = y_pred_np[i]
 
+        if device.type == 'cuda':
+            torch.cuda.empty_cache()
+
+        
+
     # global metrics OOF (Out Of Fold)
-    t3 = time.time()
+    t_end_global = time.time()
+    total_duration = t_end_global - t_start_global
 
     # saving metrics in variables
     global_mae = mean_absolute_error(y, y_all_pred)
@@ -88,19 +98,20 @@ def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_nam
     f.write(f'\nGlobal MAE = {global_mae}')
     f.write(f'\nGlobal MAPE = {global_mape}')
     f.write(f'\nGlobal MSE = {global_mse}')
-    f.write(f'\nTime = {t3 - t1}')
+    f.write(f'\nTotal execution time = {total_duration}')
     f.close()
 
     np.savetxt(f"y_pred_{exp_name}.txt", y_all_pred)
 
-    print(f"\nExecution '{exp_name}' successfully completed!")
+    print(f"\nExecution '{exp_name}' successfully completed in {total_duration:.2f}s!")
 
     return {
         "MAE": global_mae,
         "MAPE": global_mape,
         "MSE": global_mse,
         "predictions": y_all_pred,
-        "execution_time": t3 - t1
+        "execution_time": total_duration,
+        "histories": all_histories
     }
 
 
