@@ -35,7 +35,7 @@ def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_nam
 
         f.write('TRAIN: ' + str(train_index) + '\n')
         f.write('TEST: ' + str(test_index) + '\n')
-        dump(scaler, f'scaler_{exp_name}_{fold}.save')
+        dump(scaler, f'scaler_chrono_{exp_name}_{fold}.save')
 
         # training neural network
         model, device = train_pytorch_model(X_train, y_train, input_dim, model_class,
