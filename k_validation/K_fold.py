@@ -1,4 +1,3 @@
-
 import time
 import numpy as np
 import torch
@@ -9,7 +8,6 @@ from joblib import dump
 
 # Importing utils
 from utils.train_pytorch_model import *
-
 
 def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_name="exp_1"):
     input_dim = X.shape[1]
@@ -72,7 +70,7 @@ def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_nam
             train_pred_cpu = predict_in_batches(X_train)
             test_pred_cpu = predict_in_batches(X_test)
             
-            # bringing targets onto the GPU using tensor format
+            # bringing targets as tensors on the CPU
             y_train_cpu = torch.tensor(y_train, dtype=torch.float32).view(-1, 1)
             y_test_cpu = torch.tensor(y_test, dtype=torch.float32).view(-1, 1)
 
@@ -83,4 +81,47 @@ def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_nam
             # Converts predictions to NumPy format for sklearn
             y_pred_np = test_pred_cpu.numpy().flatten()
 
+        # output part
+        print('Train MSE: %.3f, Test MSE: %.3f' % (train_mse, test_mse))
+        t_fold_end = time.time()
 
+        # Saving metrics
+        f.write(f'MAE = {mean_absolute_error(y_test, y_pred_np)}\n')
+        f.write(f'MAPE = {mean_absolute_percentage_error(y_test, y_pred_np)}\n')
+        f.write(f'MSE = {mean_squared_error(y_test, y_pred_np)}\n')
+        f.write(f'Execution time for Fold {fold} = {t_fold_end - t_fold_start}\n')
+
+        # adding global predictions (NumPy vectorized approach)
+        y_all_pred[test_index] = y_pred_np
+
+        if device.type == 'cuda':
+            torch.cuda.empty_cache()
+
+    # global metrics OOF (Out Of Fold)
+    t_end_global = time.time()
+    total_duration = t_end_global - t_start_global
+
+    # saving metrics in variables
+    global_mae = mean_absolute_error(y, y_all_pred)
+    global_mape = mean_absolute_percentage_error(y, y_all_pred)
+    global_mse = mean_squared_error(y, y_all_pred)
+
+    # using variables to write in log files
+    f.write(f'\nGlobal MAE = {global_mae}')
+    f.write(f'\nGlobal MAPE = {global_mape}')
+    f.write(f'\nGlobal MSE = {global_mse}')
+    f.write(f'\nTotal execution time = {total_duration}')
+    f.close()
+
+    np.savetxt(f"y_pred_{exp_name}.txt", y_all_pred)
+
+    print(f"\nExecution '{exp_name}' successfully completed in {total_duration:.2f}s!")
+
+    return {
+        "MAE": global_mae,
+        "MAPE": global_mape,
+        "MSE": global_mse,
+        "predictions": y_all_pred,
+        "execution_time": total_duration,
+        "histories": all_histories
+    }
