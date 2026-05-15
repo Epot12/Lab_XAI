@@ -51,67 +51,36 @@ def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_nam
         # Overall evaluation on the fold
         model.eval()
         criterion = torch.nn.MSELoss()
+        
+        # Helper function for block inference and not saturating VRAM
+        def predict_in_batches(X_data, batch_size=2048):
+            preds = []
+            # dividing the data into blocks (batches)
+            for i in range(0, len(X_data), batch_size):
+                # moving only one small block at a time onto the GPU
+                X_chunk = torch.tensor(X_data[i:i+batch_size], dtype=torch.float32).to(device)
+                with torch.no_grad():
+                    chunk_pred = model(X_chunk)
+                # reporting immediately the result on the CPU and free up the GPU
+                preds.append(chunk_pred.cpu())
+            
+            # concatenating all the calculated blocks
+            return torch.cat(preds, dim=0)
+
         with torch.no_grad():
-            # Move the complete fold data to the device for final evaluation
-            X_train_t = torch.tensor(X_train, dtype=torch.float32).to(device)
-            y_train_t = torch.tensor(y_train, dtype=torch.float32).view(-1, 1).to(device)
-            X_test_t = torch.tensor(X_test, dtype=torch.float32).to(device)
-            y_test_t = torch.tensor(y_test, dtype=torch.float32).view(-1, 1).to(device)
+            # calculating predictions using safe blocks
+            train_pred_cpu = predict_in_batches(X_train)
+            test_pred_cpu = predict_in_batches(X_test)
+            
+            # bringing targets onto the GPU using tensor format
+            y_train_cpu = torch.tensor(y_train, dtype=torch.float32).view(-1, 1)
+            y_test_cpu = torch.tensor(y_test, dtype=torch.float32).view(-1, 1)
 
-            train_pred = model(X_train_t)
-            test_pred = model(X_test_t)
-
-            train_mse = criterion(train_pred, y_train_t).item()
-            test_mse = criterion(test_pred, y_test_t).item()
+            # calculating the MSE directly on the CPU
+            train_mse = criterion(train_pred_cpu, y_train_cpu).item()
+            test_mse = criterion(test_pred_cpu, y_test_cpu).item()
 
             # Converts predictions to NumPy format for sklearn
-            y_pred_np = test_pred.cpu().numpy().flatten()
-
-        print('Train MSE: %.3f, Test MSE: %.3f' % (train_mse, test_mse))
-        t_fold_end = time.time()
-
-        # Saving metrics
-        f.write(f'MAE = {mean_absolute_error(y_test, y_pred_np)}\n')
-        f.write(f'MAPE = {mean_absolute_percentage_error(y_test, y_pred_np)}\n')
-        f.write(f'MSE = {mean_squared_error(y_test, y_pred_np)}\n')
-        f.write(f'Execution time for Fold {fold} = {t_fold_end - t_fold_start}\n')
-
-        # adding global predictions
-        for i in range(len(test_index)):
-            y_all_pred[test_index[i]] = y_pred_np[i]
-
-        if device.type == 'cuda':
-            torch.cuda.empty_cache()
-
-        
-
-    # global metrics OOF (Out Of Fold)
-    t_end_global = time.time()
-    total_duration = t_end_global - t_start_global
-
-    # saving metrics in variables
-    global_mae = mean_absolute_error(y, y_all_pred)
-    global_mape = mean_absolute_percentage_error(y, y_all_pred)
-    global_mse = mean_squared_error(y, y_all_pred)
-
-    # using variables to write in log files
-    f.write(f'\nGlobal MAE = {global_mae}')
-    f.write(f'\nGlobal MAPE = {global_mape}')
-    f.write(f'\nGlobal MSE = {global_mse}')
-    f.write(f'\nTotal execution time = {total_duration}')
-    f.close()
-
-    np.savetxt(f"y_pred_{exp_name}.txt", y_all_pred)
-
-    print(f"\nExecution '{exp_name}' successfully completed in {total_duration:.2f}s!")
-
-    return {
-        "MAE": global_mae,
-        "MAPE": global_mape,
-        "MSE": global_mse,
-        "predictions": y_all_pred,
-        "execution_time": total_duration,
-        "histories": all_histories
-    }
+            y_pred_np = test_pred_cpu.numpy().flatten()
 
 
