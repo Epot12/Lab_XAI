@@ -6,15 +6,15 @@ from k_validation import *
 
 def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_size=32, exp_name="exp_1"):
     """
-    Esegue l'intero ciclo di vita dell'esperimento: Setup Directory -> Training -> Plotting -> Saving.
+    Executes all of experiment life cycle: Setup Directory -> Training -> Plotting -> Saving.
     """
     print(f"=== Starting Experiment Pipeline: {exp_name} ===")
     
     # ---------------------------------------------------------
-    # FASE 0: Creazione Cartella Esperimento
+    # PHASE 0: creating experiment folder
     # ---------------------------------------------------------
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    # Es: experiments/exp_1_20260516_130500
+    # E.g.: experiments/exp_1_20260516_130500
     save_dir = os.path.join("experiments", f"{exp_name}_{timestamp}") 
     plots_dir = os.path.join(save_dir, "Learning_Curves")
     
@@ -24,7 +24,7 @@ def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_siz
     print(f"Created isolated environment at: {save_dir}")
 
     # ---------------------------------------------------------
-    # FASE 1: Addestramento e Inferenza
+    # PHASE 1: training and inference
     # ---------------------------------------------------------
     k_fold_dict = k_fold_val(
         X=X, y=y, model_class=model_class, save_dir=save_dir, 
@@ -33,7 +33,7 @@ def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_siz
     )
 
     # ---------------------------------------------------------
-    # FASE 2: Generazione e Salvataggio Plot
+    # PHASE 2: Plot generation and saving
     # ---------------------------------------------------------
     print("Generating Learning Curves...")
     fold_histories = k_fold_dict["histories"]
@@ -48,7 +48,7 @@ def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_siz
         train_loss = history['train_loss']
         val_loss = history['val_loss']
 
-        # Salvataggio file individuali (Invisibili a schermo)
+        # saving individual files
         fig_save = plt.figure(figsize=(10, 6))
         plt.plot(train_loss, label='Training Loss (MSE)', color='blue', linewidth=2)
         plt.plot(val_loss, label='Validation Loss (MSE)', color='orange', linewidth=2)
@@ -59,12 +59,12 @@ def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_siz
         plt.grid(True, linestyle='--', alpha=0.7)
         plt.tight_layout()
 
-        # Salviamo direttamente nella sottocartella dei plot di QUESTO esperimento
+        # saving directly into the plot subfolder of THIS experiment
         plt.savefig(os.path.join(plots_dir, f"fold_{target_fold}.png"), dpi=600, bbox_inches='tight')
         plt.savefig(os.path.join(plots_dir, f"fold_{target_fold}.pdf"), format='pdf', bbox_inches='tight')
         plt.close(fig_save) 
 
-        # Plot sulla griglia del notebook
+        # Plot in notebook grid
         ax = axes[target_fold]
         ax.plot(train_loss, label='Training Loss', color='blue', linewidth=2)
         ax.plot(val_loss, label='Validation Loss', color='orange', linewidth=2)
@@ -81,7 +81,7 @@ def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_siz
     plt.show()
 
     # ---------------------------------------------------------
-    # FASE 3: Salvataggio Pickle finale
+    # PHASE 3: saving final pickle
     # ---------------------------------------------------------
     file_name_pick = os.path.join(save_dir, f"results_dict.pkl")
     with open(file_name_pick, "wb") as f:

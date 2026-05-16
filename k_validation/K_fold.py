@@ -13,7 +13,7 @@ from joblib import dump
 # Importing utils
 from utils.train_pytorch_model import *
 
-# --- MODIFICA CHIRURGICA: Aggiunto save_dir ---
+
 def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=10, batch_size=32, exp_name="exp_1"):
     input_dim = X.shape[1]
     kf = KFold(n_splits=n_splits, shuffle=False)
@@ -22,7 +22,7 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
     y_all_pred = np.zeros(y.shape)
     all_histories = []
     
-    # Salvataggio log nella cartella dell'esperimento
+    # saving logs in experiment folder
     f = open(os.path.join(save_dir, f"MAE_{exp_name}.txt"), "w")
     t_start_global = time.time()
 
@@ -40,7 +40,7 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
         f.write('TRAIN: ' + str(train_index) + '\n')
         f.write('TEST: ' + str(test_index) + '\n')
         
-        # Salvataggio scaler nella cartella
+        # saving scaler in the folder
         dump(scaler, os.path.join(save_dir, f'scaler_chrono_{exp_name}_{fold}.save'))
 
         model, device, history = train_pytorch_model(X_train, y_train, input_dim, model_class,
@@ -48,7 +48,7 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
         
         all_histories.append(history)
 
-        # Salvataggio modello nella cartella
+        # saving model in the folder
         torch.save(model.state_dict(), os.path.join(save_dir, f'model_{exp_name}_{fold}.pth'))
 
         model.eval()
@@ -100,7 +100,7 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
     f.write(f'\nTotal execution time = {total_duration}')
     f.close()
 
-    # Salvataggio predizioni globali nella cartella
+    # saving global predictions in the folder
     np.savetxt(os.path.join(save_dir, f"y_pred_{exp_name}.txt"), y_all_pred)
 
     print(f"\nExecution '{exp_name}' successfully completed in {total_duration:.2f}s!")
