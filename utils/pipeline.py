@@ -2,7 +2,7 @@ import os
 import pickle
 import matplotlib.pyplot as plt
 from datetime import datetime
-from k_validation import *
+from k_validation.K_fold import *
 
 def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_size=32, exp_name="exp_1"):
     """
