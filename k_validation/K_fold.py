@@ -9,7 +9,7 @@ from joblib import dump
 # Importing utils
 from utils.train_pytorch_model import *
 
-def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_name="exp_1"):
+def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_size=32, exp_name="exp_1"):
     input_dim = X.shape[1]
 
     # setting KFold
@@ -39,7 +39,7 @@ def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_nam
 
         # training neural network
         model, device, history = train_pytorch_model(X_train, y_train, input_dim, model_class,
-            epochs=epochs, patience=patience)
+            epochs=epochs, patience=patience, batch_size=batch_size)
         
         all_histories.append(history)
 
@@ -51,12 +51,12 @@ def k_fold_val(X, y, model_class, n_splits=10, epochs=1000, patience=10, exp_nam
         criterion = torch.nn.MSELoss()
         
         # Helper function for block inference and not saturating VRAM
-        def predict_in_batches(X_data, batch_size=2048):
+        def predict_in_batches(X_data, eval_batch_size=2048):
             preds = []
             # dividing the data into blocks (batches)
-            for i in range(0, len(X_data), batch_size):
+            for i in range(0, len(X_data), eval_batch_size):
                 # moving only one small block at a time onto the GPU
-                X_chunk = torch.tensor(X_data[i:i+batch_size], dtype=torch.float32).to(device)
+                X_chunk = torch.tensor(X_data[i:i+eval_batch_size], dtype=torch.float32).to(device)
                 with torch.no_grad():
                     chunk_pred = model(X_chunk)
                 # reporting immediately the result on the CPU and free up the GPU
