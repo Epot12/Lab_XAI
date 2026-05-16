@@ -73,7 +73,7 @@ logs/
 *.ckpt
 *.onnx
 *.save   
-*.txt
+
 
 ############################################
 # PYCHARM
@@ -153,3 +153,22 @@ SHAP_results_*/
 *.jpg
 *.jpeg
 *.svg
+
+# === Heavy Binaries ===
+*.keras
+*.pth
+*.h5
+
+# === Scaler and configuration files ===
+*.save
+*.pkl
+
+# === Log of experiments ===
+*nn_y_all_pred_chrono.txt
+*MAE_nn_chrono.txt
+*y_pred_*.txt
+*MAE_*.txt
+
+# === virtual environments ===
+.venv/
+__pycache__/
