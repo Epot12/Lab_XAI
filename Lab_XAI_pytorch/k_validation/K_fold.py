@@ -11,7 +11,7 @@ from sklearn.preprocessing import StandardScaler
 from joblib import dump
 
 # Importing utils
-from utils.train_pytorch_model import *
+from Lab_XAI_pytorch.utils.train_pytorch_model import *
 
 
 def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=10, batch_size=32, exp_name="exp_1"):
