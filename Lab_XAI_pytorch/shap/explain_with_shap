@@ -1,0 +1,83 @@
+import shap
+import torch
+import numpy as np
+from joblib import load
+import matplotlib.pyplot as plt
+
+def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test_raw, feature_names, bg_limit=500, test_limit=None):
+    """
+    Performs SHAP analysis on a trained PyTorch model and generates the summary plot.
+    
+    Parameters:
+    - model: The PyTorch model class instance (e.g., NeurNet(input_dim=...))
+    - weights_path: Path to the model weights file (e.g. 'exp_2/model_fold_0.pt')
+    - scaler_path: Path to the scaler saved for that fold (e.g. 'scaler_chrono_0.save')
+    - X_background_raw: Numpy array of training data (used to define the SHAP background)
+    - X_test_raw: Numpy array of data to be explained (e.g., the test set or an outlier sample)
+    - feature_names: List of strings with column names
+    - bg_limit: Maximum number of background samples to use (500-1000 is recommended)
+    - test_limit: Maximum number of test samples to explain (None to explain them all)
+    
+    Returns:
+    - shap_values: The calculated SHAP values ​​(useful for making other graphs later)
+    - X_test_scaled: Normalized test data
+    """
+    print(f"\n=== STARTING SHAP PIPELINE ===")
+    print(f"Model: {weights_path} | Scaler: {scaler_path}")
+    
+    # 1. Setup Device
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Used device: {device}")
+
+    # 2. Sampling data
+    if bg_limit and len(X_background_raw) > bg_limit:
+        # Takes a random sample for the background if the data is too large
+        idx_bg = np.random.choice(len(X_background_raw), bg_limit, replace=False)
+        X_bg_sampled = X_background_raw[idx_bg]
+    else:
+        X_bg_sampled = X_background_raw
+
+    if test_limit and len(X_test_raw) > test_limit:
+        X_test_sampled = X_test_raw[:test_limit]
+    else:
+        X_test_sampled = X_test_raw
+
+    # 3. Loading Scaler and normalization
+    try:
+        scaler = load(scaler_path)
+    except FileNotFoundError:
+        raise Exception(f"Error: Scaler not found in {scaler_path}")
+        
+    X_bg_scaled = scaler.transform(X_bg_sampled)
+    X_test_scaled = scaler.transform(X_test_sampled)
+
+    # 4. Converting in PyTorch tensors
+    tensor_bg = torch.tensor(X_bg_scaled, dtype=torch.float32).to(device)
+    tensor_test = torch.tensor(X_test_scaled, dtype=torch.float32).to(device)
+
+    # 5. Loading model weights
+    try:
+        model.load_state_dict(torch.load(weights_path, map_location=device, weights_only=True))
+    except FileNotFoundError:
+        raise Exception(f"Error: Model not found in {weights_path}")
+        
+    model.to(device)
+    model.eval()  # IMPORTANT
+
+    print(f"SHAP calculation (Background: {len(X_bg_sampled)} samples, Test: {len(X_test_sampled)} samples)...")
+    
+    # 6. Starting Explainer and Calculation
+    explainer = shap.GradientExplainer(model, tensor_bg)
+    shap_values = explainer.shap_values(tensor_test)
+
+    # SHAP for PyTorch sometimes returns a list (one per class), in regressors we take the first element
+    if isinstance(shap_values, list):
+        shap_values = shap_values[0]
+
+    print("Generating plot...")
+    
+    # 7. Plotting
+    plt.figure() # Creates a new plot to avoid superpositions
+    shap.summary_plot(shap_values, X_test_scaled, feature_names=feature_names)
+    
+    return shap_values, X_test_scaled
