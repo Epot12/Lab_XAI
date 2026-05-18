@@ -81,3 +81,40 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
     shap.summary_plot(shap_values, X_test_scaled, feature_names=feature_names)
     
     return shap_values, X_test_scaled
+
+
+
+def extract_feature_names(dataset_path="Data/MARSIS_historical_dataset.csv", keep_flux=False):
+    """
+    Quickly extracts feature names for SHAP analysis by reading only the file header.
+    
+    Parameters:
+    - dataset_path: path to the original CSV file.
+    - keep_flux: If True, it keeps the 'FM_data_F10_7_index' variable among the names. If False, it excludes it.
+    
+    Returns:
+    - A list of strings containing the exact names of the features seen by the model.
+    """
+    # 1. reading only the first line of the original file to be quick
+    df_temp = pd.read_csv(dataset_path, sep=";", nrows=1)
+
+    # 2. adding the two fake features for engineering
+    df_temp['FM_data_solar_longitude_cos'] = 0.0
+    df_temp['FM_data_solar_longitude_sin'] = 0.0
+
+    # 3. defining the columns that should ALWAYS BE DELETED
+    columns_to_delete = [
+        'FM_data_ephemeris_time', 'FM_data_frequency',
+        'FM_data_median_corrected_echo_power', 'FM_data_orbit_number',
+        'FM_data_peak_corrected_echo_power', 'FM_data_peak_distorted_echo_power',
+        'FM_data_peak_simulated_echo_power', 'FM_data_solar_longitude'
+    ]
+
+    # 4. Logic for solar flux: if we do NOT want to keep it, we add it to the delete list
+    if not keep_flux:
+        columns_to_delete.append('FM_data_F10_7_index')
+
+    # 5. dropping and saving the list of remaining names
+    feature_names = df_temp.drop(columns=columns_to_delete).columns.tolist()
+
+    return feature_names
