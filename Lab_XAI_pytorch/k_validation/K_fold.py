@@ -74,7 +74,11 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
             test_mse = criterion(test_pred_cpu, y_test_cpu).item()
             y_pred_np = test_pred_cpu.numpy().flatten()
 
-        print('Train MSE: %.3f, Test MSE: %.3f' % (train_mse, test_mse))
+            train_mae = mean_absolute_error(y_train_cpu.numpy(), train_pred_cpu.numpy())
+            test_mae = mean_absolute_error(y_test, y_pred_np)
+
+        print('Train MSE: %.3f, Test MSE: %.3f, Train MAE: %.3f, Test MAE: %.3f'% 
+              (train_mse, test_mse, train_mae, test_mae))
         t_fold_end = time.time()
 
         f.write(f'MAE = {mean_absolute_error(y_test, y_pred_np)}\n')
