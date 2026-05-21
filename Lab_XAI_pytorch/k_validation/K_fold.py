@@ -34,16 +34,9 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = y[train_index], y[test_index]
 
-        scaler = StandardScaler()
-        X_train = scaler.fit_transform(X_train)
-        X_test = scaler.transform(X_test)
-
         f.write('TRAIN: ' + str(train_index) + '\n')
         f.write('TEST: ' + str(test_index) + '\n')
         
-        # saving scaler in the folder
-        dump(scaler, os.path.join(save_dir, f'scaler_chrono_{exp_name}_{fold}.save'))
-
         if is_ebm:
             # Flusso EBM (Scikit-Learn style)
             model = model_class(n_jobs=-1, random_state=42)
@@ -66,6 +59,11 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
             test_mae = mean_absolute_error(y_test, y_pred_np)
 
         else:
+            scaler = StandardScaler()
+            X_train = scaler.fit_transform(X_train)
+            X_test = scaler.transform(X_test)
+            # saving scaler in the folder
+            dump(scaler, os.path.join(save_dir, f'scaler_chrono_{exp_name}_{fold}.save'))
             model, device, history = train_pytorch_model(X_train, y_train, input_dim, model_class,
             epochs=epochs, patience=patience, batch_size=batch_size)
         
