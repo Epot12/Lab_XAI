@@ -14,7 +14,7 @@ from joblib import dump
 from Lab_XAI_pytorch.utils.train_pytorch_model import *
 
 
-def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=10, batch_size=32, exp_name="exp_1"):
+def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=10, batch_size=32, exp_name="exp_1", seed_ebm=42):
     input_dim = X.shape[1]
     kf = KFold(n_splits=n_splits, shuffle=False)
 
@@ -39,7 +39,7 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
         
         if is_ebm:
             # Flusso EBM (Scikit-Learn style)
-            model = model_class(n_jobs=-1, random_state=42)
+            model = model_class(n_jobs=-1, random_state=seed_ebm)
             model.fit(X_train, y_train)
             
             # Storia vuota per non rompere la struttura dati attesa

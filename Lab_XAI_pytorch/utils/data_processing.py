@@ -44,10 +44,11 @@ def load_and_preprocess_data(dataset_path="MARSIS_historical_dataset.csv", orbit
         ])
 
     # 6. Extracting to NumPy array format
+    feature_names = X_df.columns.tolist()
     X = X_df.to_numpy()
     y = df['FM_data_peak_distorted_echo_power'].to_numpy()
 
-    return X, y
+    return X, y, feature_names
 
 import os
 import re
