@@ -56,20 +56,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def compare_frameworks_pipeline(
-    tf_log_source, 
+    tf_log_path, 
     pt_pickle_path, 
     pt_fallback_maes=None, 
     output_dir=".", 
     show_plots=True
 ):
     """
-    Parses TensorFlow logs, loads PyTorch results from a pickle file,
+    Parses TensorFlow logs from a file, loads PyTorch results from a pickle file,
     and generates comparison plots (Bar Chart for Test MAE and Grid for Learning Curves).
     
     Parameters:
     -----------
-    tf_log_source : str
-        Raw string containing the TF log OR a path to the text file containing it.
+    tf_log_path : str
+        Path to the text file (.txt) containing the TensorFlow log.
     pt_pickle_path : str
         Path to the PyTorch 'results_dict.pkl' file.
     pt_fallback_maes : list, optional
@@ -86,16 +86,11 @@ def compare_frameworks_pipeline(
     print("=== Starting Framework Comparison Analysis ===")
 
     # -----------------------------------------------------------------
-    # PHASE 1: Parsing TensorFlow Log Source
+    # PHASE 1: Parsing TensorFlow Log Source (MODIFICATA CHIRURGICAMENTE)
     # -----------------------------------------------------------------
-    # Check if the source is a valid file path, otherwise treat as raw text
-    if os.path.exists(tf_log_source):
-        print(f"Reading TensorFlow log from file: {tf_log_source}")
-        with open(tf_log_source, "r", encoding="utf-8") as f:
-            tf_log_text = f.read()
-    else:
-        print("Processing TensorFlow log from direct string input.")
-        tf_log_text = tf_log_source
+    print(f"Reading TensorFlow log from file: {tf_log_path}")
+    with open(tf_log_path, "r", encoding="utf-8") as f:
+        tf_log_text = f.read()
 
     tf_histories = []
     tf_test_maes = []
