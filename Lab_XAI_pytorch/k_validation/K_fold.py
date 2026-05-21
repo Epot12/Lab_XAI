@@ -26,6 +26,7 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
     f = open(os.path.join(save_dir, f"MAE_{exp_name}.txt"), "w")
     t_start_global = time.time()
 
+    is_ebm = (model_class.__name__ == 'ExplainableBoostingRegressor')
     for train_index, test_index in kf.split(X):
         fold += 1
         t_fold_start = time.time()
@@ -43,42 +44,64 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
         # saving scaler in the folder
         dump(scaler, os.path.join(save_dir, f'scaler_chrono_{exp_name}_{fold}.save'))
 
-        model, device, history = train_pytorch_model(X_train, y_train, input_dim, model_class,
-            epochs=epochs, patience=patience, batch_size=batch_size)
-        
-        all_histories.append(history)
-
-        # saving model in the folder
-        torch.save(model.state_dict(), os.path.join(save_dir, f'model_{exp_name}_{fold}.pth'))
-
-        model.eval()
-        criterion = torch.nn.MSELoss()
-        
-        def predict_in_batches(X_data, eval_batch_size=2048):
-            preds = []
-            for i in range(0, len(X_data), eval_batch_size):
-                X_chunk = torch.tensor(X_data[i:i+eval_batch_size], dtype=torch.float32).to(device)
-                with torch.no_grad():
-                    chunk_pred = model(X_chunk)
-                preds.append(chunk_pred.cpu())
-            return torch.cat(preds, dim=0)
-
-        with torch.no_grad():
-            train_pred_cpu = predict_in_batches(X_train)
-            test_pred_cpu = predict_in_batches(X_test)
+        if is_ebm:
+            # Flusso EBM (Scikit-Learn style)
+            model = model_class(n_jobs=-1, random_state=42)
+            model.fit(X_train, y_train)
             
-            y_train_cpu = torch.tensor(y_train, dtype=torch.float32).view(-1, 1)
-            y_test_cpu = torch.tensor(y_test, dtype=torch.float32).view(-1, 1)
-
-            train_mse = criterion(train_pred_cpu, y_train_cpu).item()
-            test_mse = criterion(test_pred_cpu, y_test_cpu).item()
-            y_pred_np = test_pred_cpu.numpy().flatten()
-
-            train_mae = mean_absolute_error(y_train_cpu.numpy(), train_pred_cpu.numpy())
+            # Storia vuota per non rompere la struttura dati attesa
+            all_histories.append({'train_loss': [], 'val_loss': []})
+            
+            # Salvataggio EBM con Joblib
+            dump(model, os.path.join(save_dir, f'model_{exp_name}_{fold}.save'))
+            
+            # Inferenza diretta NumPy
+            y_train_pred = model.predict(X_train)
+            y_pred_np = model.predict(X_test).flatten()
+            
+            # Metriche via Sklearn
+            train_mse = mean_squared_error(y_train, y_train_pred)
+            test_mse = mean_squared_error(y_test, y_pred_np)
+            train_mae = mean_absolute_error(y_train, y_train_pred)
             test_mae = mean_absolute_error(y_test, y_pred_np)
 
+        else:
+            model, device, history = train_pytorch_model(X_train, y_train, input_dim, model_class,
+            epochs=epochs, patience=patience, batch_size=batch_size)
+        
+            all_histories.append(history)
+
+            # saving model in the folder
+            torch.save(model.state_dict(), os.path.join(save_dir, f'model_{exp_name}_{fold}.pth'))
+
+            model.eval()
+            criterion = torch.nn.MSELoss()
+        
+            def predict_in_batches(X_data, eval_batch_size=2048):
+                preds = []
+                for i in range(0, len(X_data), eval_batch_size):
+                    X_chunk = torch.tensor(X_data[i:i+eval_batch_size], dtype=torch.float32).to(device)
+                    with torch.no_grad():
+                        chunk_pred = model(X_chunk)
+                    preds.append(chunk_pred.cpu())
+                return torch.cat(preds, dim=0)
+
+            with torch.no_grad():
+                train_pred_cpu = predict_in_batches(X_train)
+                test_pred_cpu = predict_in_batches(X_test)
+            
+                y_train_cpu = torch.tensor(y_train, dtype=torch.float32).view(-1, 1)
+                y_test_cpu = torch.tensor(y_test, dtype=torch.float32).view(-1, 1)
+
+                train_mse = criterion(train_pred_cpu, y_train_cpu).item()
+                test_mse = criterion(test_pred_cpu, y_test_cpu).item()
+                y_pred_np = test_pred_cpu.numpy().flatten()
+
+                train_mae = mean_absolute_error(y_train_cpu.numpy(), train_pred_cpu.numpy())
+                test_mae = mean_absolute_error(y_test, y_pred_np)
+
         print('Train MSE: %.3f, Test MSE: %.3f, Train MAE: %.3f, Test MAE: %.3f'% 
-              (train_mse, test_mse, train_mae, test_mae))
+            (train_mse, test_mse, train_mae, test_mae))
         t_fold_end = time.time()
 
         f.write(f'MAE = {mean_absolute_error(y_test, y_pred_np)}\n')
@@ -88,7 +111,7 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
 
         y_all_pred[test_index] = y_pred_np
 
-        if device.type == 'cuda':
+        if not is_ebm and device.type == 'cuda':
             torch.cuda.empty_cache()
 
     t_end_global = time.time()
