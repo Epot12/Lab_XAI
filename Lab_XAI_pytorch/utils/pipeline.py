@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 from k_validation.K_fold import *
 
-def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_size=32, exp_name="exp_1", seed_ebm=42):
+def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_size=32, exp_name="exp_1", seed_ebm=42, model_kwargs=None):
     """
     Executes all of experiment life cycle: Setup Directory -> Training -> Plotting -> Saving.
     """
@@ -29,7 +29,7 @@ def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_siz
     k_fold_dict = k_fold_val(
         X=X, y=y, model_class=model_class, save_dir=save_dir, 
         n_splits=n_splits, epochs=epochs, patience=patience, 
-        batch_size=batch_size, exp_name=exp_name, seed_ebm=seed_ebm
+        batch_size=batch_size, exp_name=exp_name, seed_ebm=seed_ebm, model_kwargs=model_kwargs
     )
 
     # ---------------------------------------------------------
