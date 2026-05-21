@@ -37,48 +37,52 @@ def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_siz
     # ---------------------------------------------------------
     print("Generating Learning Curves...")
     fold_histories = k_fold_dict["histories"]
-    num_folds = len(fold_histories)
-    cols = 2
-    rows = (num_folds + 1) // 2
+    if len(fold_histories) > 0 and len(fold_histories[0]['train_loss']) > 0:
+        num_folds = len(fold_histories)
+        cols = 2
+        rows = (num_folds + 1) // 2
 
-    fig, axes = plt.subplots(rows, cols, figsize=(15, 5 * rows))
-    axes = axes.flatten()
+        fig, axes = plt.subplots(rows, cols, figsize=(15, 5 * rows))
+        axes = axes.flatten()
 
-    for target_fold, history in enumerate(fold_histories):
-        train_loss = history['train_loss']
-        val_loss = history['val_loss']
+        for target_fold, history in enumerate(fold_histories):
+            train_loss = history['train_loss']
+            val_loss = history['val_loss']
 
-        # saving individual files
-        fig_save = plt.figure(figsize=(10, 6))
-        plt.plot(train_loss, label='Training Loss (MSE)', color='blue', linewidth=2)
-        plt.plot(val_loss, label='Validation Loss (MSE)', color='orange', linewidth=2)
-        plt.title(f'Learning Curve - Fold {target_fold}', fontsize=14)
-        plt.xlabel('Epochs', fontsize=12)
-        plt.ylabel('Loss (Mean Squared Error)', fontsize=12)
-        plt.legend(fontsize=12)
-        plt.grid(True, linestyle='--', alpha=0.7)
-        plt.tight_layout()
+            # saving individual files
+            fig_save = plt.figure(figsize=(10, 6))
+            plt.plot(train_loss, label='Training Loss (MSE)', color='blue', linewidth=2)
+            plt.plot(val_loss, label='Validation Loss (MSE)', color='orange', linewidth=2)
+            plt.title(f'Learning Curve - Fold {target_fold}', fontsize=14)
+            plt.xlabel('Epochs', fontsize=12)
+            plt.ylabel('Loss (Mean Squared Error)', fontsize=12)
+            plt.legend(fontsize=12)
+            plt.grid(True, linestyle='--', alpha=0.7)
+            plt.tight_layout()
 
-        # saving directly into the plot subfolder of THIS experiment
-        plt.savefig(os.path.join(plots_dir, f"fold_{target_fold}.png"), dpi=600, bbox_inches='tight')
-        plt.savefig(os.path.join(plots_dir, f"fold_{target_fold}.pdf"), format='pdf', bbox_inches='tight')
-        plt.close(fig_save) 
+            # saving directly into the plot subfolder of THIS experiment
+            plt.savefig(os.path.join(plots_dir, f"fold_{target_fold}.png"), dpi=600, bbox_inches='tight')
+            plt.savefig(os.path.join(plots_dir, f"fold_{target_fold}.pdf"), format='pdf', bbox_inches='tight')
+            plt.close(fig_save) 
 
-        # Plot in notebook grid
-        ax = axes[target_fold]
-        ax.plot(train_loss, label='Training Loss', color='blue', linewidth=2)
-        ax.plot(val_loss, label='Validation Loss', color='orange', linewidth=2)
-        ax.set_title(f'Learning Curve - Fold {target_fold}', fontsize=14)
-        ax.set_xlabel('Epochs', fontsize=12)
-        ax.set_ylabel('Loss (MSE)', fontsize=12)
-        ax.legend(fontsize=10)
-        ax.grid(True, linestyle='--', alpha=0.7)
+            # Plot in notebook grid
+            ax = axes[target_fold]
+            ax.plot(train_loss, label='Training Loss', color='blue', linewidth=2)
+            ax.plot(val_loss, label='Validation Loss', color='orange', linewidth=2)
+            ax.set_title(f'Learning Curve - Fold {target_fold}', fontsize=14)
+            ax.set_xlabel('Epochs', fontsize=12)
+            ax.set_ylabel('Loss (MSE)', fontsize=12)
+            ax.legend(fontsize=10)
+            ax.grid(True, linestyle='--', alpha=0.7)
 
-    for j in range(num_folds, len(axes)):
-        fig.delaxes(axes[j])
+        for j in range(num_folds, len(axes)):
+            fig.delaxes(axes[j])
 
-    plt.tight_layout()
-    plt.show()
+        fig.tight_layout()
+        plt.show()
+
+    else:
+        print("Note: Explainable Boosting Machine detected. Skipping Learning Curves plotting.")
 
     # ---------------------------------------------------------
     # PHASE 3: saving final pickle
