@@ -57,27 +57,14 @@ import numpy as np
 
 def compare_frameworks_pipeline(
     tf_log_path, 
-    pt_pickle_path, 
+    pt_log_path,  # Cambiato da pt_pickle_path a pt_log_path
     pt_fallback_maes=None, 
     output_dir=".", 
     show_plots=True
 ):
     """
-    Parses TensorFlow logs from a file, loads PyTorch results from a pickle file,
+    Parses TensorFlow logs from a file, parses PyTorch logs from a text file,
     and generates comparison plots (Bar Chart for Test MAE and Grid for Learning Curves).
-    
-    Parameters:
-    -----------
-    tf_log_path : str
-        Path to the text file (.txt) containing the TensorFlow log.
-    pt_pickle_path : str
-        Path to the PyTorch 'results_dict.pkl' file.
-    pt_fallback_maes : list, optional
-        List of 10 float values to use if PyTorch MAEs are missing from the pickle.
-    output_dir : str, default "."
-        Directory where comparison plot images will be saved.
-    show_plots : bool, default True
-        If True, executes plt.show() to display plots in notebooks/IDEs.
     """
     if pt_fallback_maes is None:
         pt_fallback_maes = [2.798, 2.439, 2.652, 2.848, 4.065, 4.990, 4.415, 3.361, 3.725, 2.707]
@@ -86,7 +73,7 @@ def compare_frameworks_pipeline(
     print("=== Starting Framework Comparison Analysis ===")
 
     # -----------------------------------------------------------------
-    # PHASE 1: Parsing TensorFlow Log Source (MODIFICATA CHIRURGICAMENTE)
+    # PHASE 1: Parsing TensorFlow Log Source
     # -----------------------------------------------------------------
     print(f"Reading TensorFlow log from file: {tf_log_path}")
     with open(tf_log_path, "r", encoding="utf-8") as f:
@@ -98,13 +85,11 @@ def compare_frameworks_pipeline(
     current_val_loss = []
 
     for line in tf_log_text.strip().split('\n'):
-        # Extract training and validation loss (MSE)
         metrics_match = re.search(r"loss:\s*([\d.]+).*?val_loss:\s*([\d.]+)", line)
         if metrics_match:
             current_train_loss.append(float(metrics_match.group(1)))
             current_val_loss.append(float(metrics_match.group(2)))
         
-        # Extract fold end marker and Test MAE
         test_match = re.search(r"Train:\s*[\d.]+, Test:\s*([\d.]+)", line)
         if test_match:
             tf_test_maes.append(float(test_match.group(1)))
@@ -120,27 +105,40 @@ def compare_frameworks_pipeline(
 
     if num_folds == 0:
         print("⚠️ Warning: No TensorFlow folds were parsed. Please check the log formatting or regex matches.")
-        num_folds = 10 # Default safely to 10 for fallback plotting
+        num_folds = 10
 
     # -----------------------------------------------------------------
-    # PHASE 2: Loading PyTorch Pickle Data
+    # PHASE 2: Parsing PyTorch Text Log (MODIFICATA CHIRURGICAMENTE)
     # -----------------------------------------------------------------
     has_pytorch_data = False
     pt_histories = None
-    pt_test_maes = pt_fallback_maes
+    pt_test_maes = []
 
-    if os.path.exists(pt_pickle_path):
+    if os.path.exists(pt_log_path):
         try:
-            with open(pt_pickle_path, "rb") as f:
-                pt_k_fold_dict = pickle.load(f)
-            pt_histories = pt_k_fold_dict.get("histories", None)
-            pt_test_maes = pt_k_fold_dict.get("test_maes", pt_fallback_maes)
-            has_pytorch_data = True
-            print(f"👉 PyTorch data successfully loaded from: {pt_pickle_path}")
+            print(f"Reading PyTorch log from text file: {pt_log_path}")
+            with open(pt_log_path, "r", encoding="utf-8") as f:
+                pt_log_text = f.read()
+            
+            # Estrae tutti i valori di MAE associati ai singoli fold (esclude il Global MAE alla fine)
+            # Cerca i pattern "MAE = valore" prima della stringa "Global MAE"
+            pt_folds_raw = pt_log_text.split("Global MAE")[0]
+            pt_test_maes = [float(x) for x in re.findall(r"MAE\s*=\s*([\d.]+)", pt_folds_raw)]
+            
+            if len(pt_test_maes) == num_folds:
+                has_pytorch_data = True
+                print(f"👉 PyTorch data successfully extracted: {len(pt_test_maes)} MAE values found.")
+            else:
+                print(f"⚠️ Warning: Found {len(pt_test_maes)} MAE values for PyTorch, but TensorFlow has {num_folds} folds.")
+                print("Switching to fallback MAE parameters for consistency.")
+                pt_test_maes = pt_fallback_maes
+                
         except Exception as e:
-            print(f"⚠️ Error reading Pickle file: {e}. Switching to fallback MAE parameters.")
+            print(f"⚠️ Error reading PyTorch text file: {e}. Switching to fallback MAE parameters.")
+            pt_test_maes = pt_fallback_maes
     else:
-        print(f"⚠️ PyTorch Pickle not found at '{pt_pickle_path}'. Using fallback verification MAEs.")
+        print(f"⚠️ PyTorch log file not found at '{pt_log_path}'. Using fallback verification MAEs.")
+        pt_test_maes = pt_fallback_maes
 
     # -----------------------------------------------------------------
     # PHASE 3: Generating Plot 1 - Bar Chart (Test MAE Comparison)
@@ -171,6 +169,7 @@ def compare_frameworks_pipeline(
     # PHASE 4: Generating Plot 2 - Grid (Learning Curves Overlay)
     # -----------------------------------------------------------------
     if has_pytorch_data and pt_histories is not None:
+        # Questo blocco viene ignorato dal txt poiché non ci sono le curve storiche epoche per epoca
         cols = 2
         rows = (num_folds + 1) // 2
         fig, axes = plt.subplots(rows, cols, figsize=(16, 4 * rows))
@@ -178,12 +177,9 @@ def compare_frameworks_pipeline(
 
         for fold_idx in range(num_folds):
             ax = axes[fold_idx]
-            
-            # PyTorch curves (Solid lines)
             ax.plot(pt_histories[fold_idx]['train_loss'], label='PT Train Loss', color='#EE4C2C', linewidth=2)
             ax.plot(pt_histories[fold_idx]['val_loss'], label='PT Val Loss', color='#982C16', linewidth=2)
             
-            # TensorFlow curves (Dashed lines)
             if fold_idx < len(tf_histories):
                 ax.plot(tf_histories[fold_idx]['train_loss'], label='TF Train Loss', color='#FF6F00', linewidth=1.8, linestyle='--')
                 ax.plot(tf_histories[fold_idx]['val_loss'], label='TF Val Loss', color='#B34E00', linewidth=1.8, linestyle='--')
@@ -194,7 +190,6 @@ def compare_frameworks_pipeline(
             ax.grid(True, linestyle=':', alpha=0.6)
             ax.legend(fontsize=9, loc='upper right')
 
-        # Clean empty subplots
         for j in range(num_folds, len(axes)):
             fig.delaxes(axes[j])
 
@@ -205,6 +200,8 @@ def compare_frameworks_pipeline(
             plt.show()
         else:
             plt.close()
+    else:
+        print("ℹ️ Note: PyTorch learning curves data (epochs history) not present in text log. Skipping Phase 4.")
             
     print(f"📊 Visual files successfully saved in the directory: '{output_dir}'")
     print("=== Comparison Process Successfully Completed ===")
