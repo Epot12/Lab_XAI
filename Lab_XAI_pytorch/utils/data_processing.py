@@ -50,158 +50,100 @@ def load_and_preprocess_data(dataset_path="MARSIS_historical_dataset.csv", orbit
     return X, y
 
 import os
-import pickle
 import re
 import matplotlib.pyplot as plt
 import numpy as np
 
-def compare_frameworks_pipeline(
-    tf_log_path, 
-    pt_log_path,  # Cambiato da pt_pickle_path a pt_log_path
-    pt_fallback_maes=None, 
+def parse_generic_log(file_path):
+    """
+    Rileva automaticamente il formato del file log (TF o PT) 
+    e ne estrae i Test MAE finali di ogni fold.
+    """
+    if not os.path.exists(file_path):
+        print(f"⚠️ File non trovato: {file_path}")
+        return []
+
+    with open(file_path, "r", encoding="utf-8") as f:
+        log_text = f.read()
+
+    maes = []
+    
+    # FORMATO DI TIPO 1: PyTorch (MAE = X.XXX)
+    if "MAE =" in log_text or "Global MAE" in log_text:
+        # Isola i singoli fold prima del riepilogo globale
+        folds_raw = log_text.split("Global MAE")[0] if "Global MAE" in log_text else log_text
+        maes = [float(x) for x in re.findall(r"MAE\s*=\s*([\d.]+)", folds_raw)]
+        print(f"-> Rilevato formato PyTorch. Estratti {len(maes)} valori MAE.")
+        
+    # FORMATO DI TIPO 2: TensorFlow / Keras (Train: X.X, Test: X.XXX)
+    elif "Test:" in log_text:
+        maes = [float(x) for x in re.findall(r"Train:\s*[\d.]+,\s*Test:\s*([\d.]+)", log_text)]
+        print(f"-> Rilevato formato TensorFlow. Estratti {len(maes)} valori MAE.")
+        
+    return maes
+
+
+def compare_experiments_pipeline(
+    exp1_log_path, 
+    exp2_log_path, 
+    exp1_label="Esperimento 1",
+    exp2_label="Esperimento 2",
     output_dir=".", 
     show_plots=True
 ):
     """
-    Parses TensorFlow logs from a file, parses PyTorch logs from a text file,
-    and generates comparison plots (Bar Chart for Test MAE and Grid for Learning Curves).
+    Pipeline universale per confrontare i Test MAE di due esperimenti qualsiasi
+    (PT vs PT, TF vs TF, PT vs TF) partendo dai file di log testuali.
     """
-    if pt_fallback_maes is None:
-        pt_fallback_maes = [2.798, 2.439, 2.652, 2.848, 4.065, 4.990, 4.415, 3.361, 3.725, 2.707]
-        
     os.makedirs(output_dir, exist_ok=True)
-    print("=== Starting Framework Comparison Analysis ===")
+    print("=== Starting Experiment Comparison Analysis ===")
 
-    # -----------------------------------------------------------------
-    # PHASE 1: Parsing TensorFlow Log Source
-    # -----------------------------------------------------------------
-    print(f"Reading TensorFlow log from file: {tf_log_path}")
-    with open(tf_log_path, "r", encoding="utf-8") as f:
-        tf_log_text = f.read()
+    # Fase 1: Parsing dei due log
+    print(f"Analisi {exp1_label}...")
+    maes_exp1 = parse_generic_log(exp1_log_path)
+    
+    print(f"Analisi {exp2_label}...")
+    maes_exp2 = parse_generic_log(exp2_log_path)
 
-    tf_histories = []
-    tf_test_maes = []
-    current_train_loss = []
-    current_val_loss = []
-
-    for line in tf_log_text.strip().split('\n'):
-        metrics_match = re.search(r"loss:\s*([\d.]+).*?val_loss:\s*([\d.]+)", line)
-        if metrics_match:
-            current_train_loss.append(float(metrics_match.group(1)))
-            current_val_loss.append(float(metrics_match.group(2)))
-        
-        test_match = re.search(r"Train:\s*[\d.]+, Test:\s*([\d.]+)", line)
-        if test_match:
-            tf_test_maes.append(float(test_match.group(1)))
-            tf_histories.append({
-                'train_loss': current_train_loss,
-                'val_loss': current_val_loss
-            })
-            current_train_loss = []
-            current_val_loss = []
-
-    num_folds = len(tf_test_maes)
-    print(f"👉 TensorFlow Parsing complete: {num_folds} folds successfully extracted.")
-
+    # Validazione dei dati estratti
+    num_folds = max(len(maes_exp1), len(maes_exp2))
     if num_folds == 0:
-        print("⚠️ Warning: No TensorFlow folds were parsed. Please check the log formatting or regex matches.")
-        num_folds = 10
+        print("❌ Errore: Impossibile estrarre dati validi da entrambi i file. Verifica i formati.")
+        return
+
+    # Se un esperimento ha meno fold dell'altro, pareggia con zeri o taglia per evitare crash nel grafico
+    if len(maes_exp1) != len(maes_exp2):
+        print(f"⚠️ Attenzione: Numero di fold disallineato ({len(maes_exp1)} vs {len(maes_exp2)}).")
+        # Allinea le lunghezze riempiendo di NaN i valori mancanti
+        while len(maes_exp1) < num_folds: maes_exp1.append(np.nan)
+        while len(maes_exp2) < num_folds: maes_exp2.append(np.nan)
 
     # -----------------------------------------------------------------
-    # PHASE 2: Parsing PyTorch Text Log (MODIFICATA CHIRURGICAMENTE)
-    # -----------------------------------------------------------------
-    has_pytorch_data = False
-    pt_histories = None
-    pt_test_maes = []
-
-    if os.path.exists(pt_log_path):
-        try:
-            print(f"Reading PyTorch log from text file: {pt_log_path}")
-            with open(pt_log_path, "r", encoding="utf-8") as f:
-                pt_log_text = f.read()
-            
-            # Estrae tutti i valori di MAE associati ai singoli fold (esclude il Global MAE alla fine)
-            # Cerca i pattern "MAE = valore" prima della stringa "Global MAE"
-            pt_folds_raw = pt_log_text.split("Global MAE")[0]
-            pt_test_maes = [float(x) for x in re.findall(r"MAE\s*=\s*([\d.]+)", pt_folds_raw)]
-            
-            if len(pt_test_maes) == num_folds:
-                has_pytorch_data = True
-                print(f"👉 PyTorch data successfully extracted: {len(pt_test_maes)} MAE values found.")
-            else:
-                print(f"⚠️ Warning: Found {len(pt_test_maes)} MAE values for PyTorch, but TensorFlow has {num_folds} folds.")
-                print("Switching to fallback MAE parameters for consistency.")
-                pt_test_maes = pt_fallback_maes
-                
-        except Exception as e:
-            print(f"⚠️ Error reading PyTorch text file: {e}. Switching to fallback MAE parameters.")
-            pt_test_maes = pt_fallback_maes
-    else:
-        print(f"⚠️ PyTorch log file not found at '{pt_log_path}'. Using fallback verification MAEs.")
-        pt_test_maes = pt_fallback_maes
-
-    # -----------------------------------------------------------------
-    # PHASE 3: Generating Plot 1 - Bar Chart (Test MAE Comparison)
+    # GENERAZIONE GRAFICO A BARRE COMPARATIVO
     # -----------------------------------------------------------------
     folds = np.arange(num_folds)
     bar_width = 0.35
 
     plt.figure(figsize=(12, 5))
-    plt.bar(folds - bar_width/2, pt_test_maes[:num_folds], bar_width, label='PyTorch', color='#EE4C2C')
-    plt.bar(folds + bar_width/2, tf_test_maes[:num_folds], bar_width, label='TensorFlow', color='#FF6F00', alpha=0.8)
+    # Colore personalizzato per distinguere gli esperimenti
+    plt.bar(folds - bar_width/2, maes_exp1, bar_width, label=exp1_label, color='#2C3E50')
+    plt.bar(folds + bar_width/2, maes_exp2, bar_width, label=exp2_label, color='#16A085', alpha=0.9)
 
     plt.xlabel('Fold Index', fontsize=12)
     plt.ylabel('Test MAE', fontsize=12)
-    plt.title('Final Performance Cross-Validation: PyTorch vs TensorFlow', fontsize=14, fontweight='bold')
+    plt.title(f'Performance Cross-Validation: {exp1_label} vs {exp2_label}', fontsize=14, fontweight='bold')
     plt.xticks(folds, [f"Fold {i}" for i in folds])
     plt.grid(axis='y', linestyle='--', alpha=0.5)
     plt.legend(fontsize=11)
     plt.tight_layout()
     
-    bar_chart_path = os.path.join(output_dir, "framework_mae_comparison.png")
-    plt.savefig(bar_chart_path, dpi=300)
+    chart_path = os.path.join(output_dir, f"comparison_{exp1_label}_vs_{exp2_label}.png".replace(" ", "_").lower())
+    plt.savefig(chart_path, dpi=300)
+    
     if show_plots:
         plt.show()
     else:
         plt.close()
-
-    # -----------------------------------------------------------------
-    # PHASE 4: Generating Plot 2 - Grid (Learning Curves Overlay)
-    # -----------------------------------------------------------------
-    if has_pytorch_data and pt_histories is not None:
-        # Questo blocco viene ignorato dal txt poiché non ci sono le curve storiche epoche per epoca
-        cols = 2
-        rows = (num_folds + 1) // 2
-        fig, axes = plt.subplots(rows, cols, figsize=(16, 4 * rows))
-        axes = axes.flatten()
-
-        for fold_idx in range(num_folds):
-            ax = axes[fold_idx]
-            ax.plot(pt_histories[fold_idx]['train_loss'], label='PT Train Loss', color='#EE4C2C', linewidth=2)
-            ax.plot(pt_histories[fold_idx]['val_loss'], label='PT Val Loss', color='#982C16', linewidth=2)
             
-            if fold_idx < len(tf_histories):
-                ax.plot(tf_histories[fold_idx]['train_loss'], label='TF Train Loss', color='#FF6F00', linewidth=1.8, linestyle='--')
-                ax.plot(tf_histories[fold_idx]['val_loss'], label='TF Val Loss', color='#B34E00', linewidth=1.8, linestyle='--')
-            
-            ax.set_title(f'Learning Curve - Fold {fold_idx}', fontsize=12, fontweight='bold')
-            ax.set_xlabel('Epochs', fontsize=10)
-            ax.set_ylabel('Loss (MSE)', fontsize=10)
-            ax.grid(True, linestyle=':', alpha=0.6)
-            ax.legend(fontsize=9, loc='upper right')
-
-        for j in range(num_folds, len(axes)):
-            fig.delaxes(axes[j])
-
-        plt.tight_layout()
-        curves_path = os.path.join(output_dir, "framework_curves_comparison.png")
-        plt.savefig(curves_path, dpi=300)
-        if show_plots:
-            plt.show()
-        else:
-            plt.close()
-    else:
-        print("ℹ️ Note: PyTorch learning curves data (epochs history) not present in text log. Skipping Phase 4.")
-            
-    print(f"📊 Visual files successfully saved in the directory: '{output_dir}'")
-    print("=== Comparison Process Successfully Completed ===")
+    print(f"📊 Grafico salvato in: '{chart_path}'")
+    print("=== Processo di Confronto Completato ===")
