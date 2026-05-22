@@ -1,3 +1,9 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+
 def analyze_target_distribution(y, save_path=None):
     """
     Analisi statistica avanzata del target radar.
@@ -32,7 +38,7 @@ def analyze_sequential_dependency(y, max_lag=50, save_path=None):
     """
     acf = [1.0]
     for lag in range(1, max_lag + 1):
-        corr = np.corrcoef(y Harvey[:-lag], y[lag:])[0, 1]
+        corr = np.corrcoef(y[:-lag], y[lag:])[0, 1]
         acf.append(corr)
         
     plt.figure(figsize=(10, 4))
