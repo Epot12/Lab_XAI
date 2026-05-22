@@ -67,7 +67,7 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
     print(f"SHAP calculation (Background: {len(X_bg_sampled)} samples, Test: {len(X_test_sampled)} samples)...")
     
     # 6. Starting Explainer and Calculation
-    explainer = shap.GradientExplainer(model, tensor_bg)
+    explainer = shap.DeepExplainer(model, tensor_bg)
     shap_values = explainer.shap_values(tensor_test)
 
     # SHAP for PyTorch sometimes returns a list (one per class), in regressors we take the first element
@@ -80,7 +80,7 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
     plt.figure() # Creates a new plot to avoid superpositions
     shap.summary_plot(shap_values, X_test_scaled, feature_names=feature_names)
     
-    return shap_values, X_test_scaled
+    return shap_values, X_test_scaled, explainer
 
 
 
