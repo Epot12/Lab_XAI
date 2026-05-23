@@ -1,6 +1,7 @@
 
 import numpy as np
 import pandas as pd
+from datetime import datetime
 
 
 def load_and_preprocess_data(dataset_path="MARSIS_historical_dataset.csv", orbit_path="orbit_to_remove", keep_flux=False):
@@ -138,15 +139,24 @@ def compare_experiments_pipeline(
     plt.legend(fontsize=11)
     plt.tight_layout()
     
-    chart_path = os.path.join(output_dir, f"comparison_{exp1_label}_vs_{exp2_label}.png".replace(" ", "_").lower())
-    plt.savefig(chart_path, dpi=300)
+    date_str = datetime.now().strftime("%Y%m%d")
+    # Creiamo il nome base pulito (senza estensione)
+    filename_base = f"comparison_{date_str}_{exp1_label}_vs_{exp2_label}".replace(" ", "_").lower()
+    
+    # Costruiamo i due percorsi separati
+    chart_path_png = os.path.join(output_dir, f"{filename_base}.png")
+    chart_path_pdf = os.path.join(output_dir, f"{filename_base}.pdf")
+    
+    # Salviamo in PNG e poi in PDF
+    plt.savefig(chart_path_png, dpi=300, bbox_inches='tight')
+    plt.savefig(chart_path_pdf, format='pdf', bbox_inches='tight')
     
     if show_plots:
         plt.show()
     else:
         plt.close()
             
-    print(f"📊 Grafico salvato in: '{chart_path}'")
+    print(f"📊 Grafici salvati in:\n   - {chart_path_png}\n   - {chart_path_pdf}")
     print("=== Processo di Confronto Completato ===")
 
 import io
