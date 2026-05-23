@@ -148,3 +148,19 @@ def compare_experiments_pipeline(
             
     print(f"📊 Grafico salvato in: '{chart_path}'")
     print("=== Processo di Confronto Completato ===")
+
+import io
+import base64
+from IPython.display import display, HTML
+
+def fig_to_html_element(fig):
+    """
+    Salva la figura in memoria, la converte in stringa Base64 
+    e restituisce un blocco div HTML isolato.
+    """
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png', bbox_inches='tight', dpi=120)
+    buf.seek(0)
+    img_base64 = base64.b64encode(buf.read()).decode('utf-8')
+    plt.close(fig)  # Chiude la figura per evitare che si duplichi sotto
+    return f'<div style="flex: 1; min-width: 45%; padding: 5px;"><img src="data:image/png;base64,{img_base64}" style="width:100%; height:auto;"/></div>'
