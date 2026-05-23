@@ -80,10 +80,7 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
 
     print("Generating plot...")
     
-    # 7. Plotting
-    plt.figure(figsize=(10, 6)) 
-    shap.summary_plot(shap_values, X_test_scaled, feature_names=feature_names, show=False) 
-    plt.tight_layout() 
+    print("SHAP calculation completed.")
     
     return shap_values, X_test_scaled, explainer
 
