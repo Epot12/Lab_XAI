@@ -1,3 +1,5 @@
+import torch.nn as nn
+
 class LSTMRegressor(nn.Module):
     def __init__(self, input_dim, hidden_dim, num_layers=1):
         super(LSTMRegressor, self).__init__()
