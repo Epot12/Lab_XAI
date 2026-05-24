@@ -15,3 +15,36 @@ def create_dataset_windows(data, target_col, time_col, lookback=12):
         
     return np.array(X_flux), np.array(X_time), np.array(y)
 
+import os
+import torch
+import pickle
+
+def save_lstm_and_scalers(model, scalers_dict, save_dir="saved_lstm", model_name="lstm_model.pth", scaler_name="lstm_scalers.pkl"):
+    """
+    Salva i pesi di un modello PyTorch (LSTM) e i relativi scaler su disco.
+    
+    Parametri:
+    - model: Il modello PyTorch addestrato.
+    - scalers_dict (dict): Dizionario contenente gli scaler da salvare.
+    - save_dir (str): Il percorso della cartella dove salvare i file.
+    - model_name (str): Il nome del file per i pesi del modello.
+    - scaler_name (str): Il nome del file per il salvataggio degli scaler.
+    """
+    # 1. Creazione della cartella (se non esiste)
+    os.makedirs(save_dir, exist_ok=True)
+    
+    # Costruzione dei percorsi completi in modo sicuro per ogni Sistema Operativo
+    model_path = os.path.join(save_dir, model_name)
+    scaler_path = os.path.join(save_dir, scaler_name)
+    
+    # 2. Salvataggio dei pesi del modello
+    torch.save(model.state_dict(), model_path)
+    
+    # 3. Salvataggio degli scaler tramite pickle
+    with open(scaler_path, "wb") as f:
+        pickle.dump(scalers_dict, f)
+        
+    print(f"✅ Operazione completata con successo!")
+    print(f"   - Pesi modello salvati in: {model_path}")
+    print(f"   - Scaler salvati in:       {scaler_path}")
+
