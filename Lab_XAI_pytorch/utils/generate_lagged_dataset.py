@@ -25,6 +25,11 @@ def generate_lagged_dataset(
     """
     print(f"=== PREPARAZIONE DATASET CON LAG ({feature_col} A -{lag_months} MESE/I) ===")
 
+    if os.path.exists(output_csv_path):
+        print(f"⚡ Il file {output_csv_path} esiste già.")
+        print("Saltando la rigenerazione. Caricamento del dataset esistente in corso...")
+        return pd.read_csv(output_csv_path, parse_dates=[time_col])
+
     # 1. Caricamento del dataset originale
     if not os.path.exists(input_csv_path):
         raise FileNotFoundError(f"Errore: Il file {input_csv_path} non esiste.")
@@ -42,6 +47,8 @@ def generate_lagged_dataset(
     df_feature[time_col] = df_feature[time_col] + pd.DateOffset(months=lag_months)
     lagged_col_name = f'{feature_col}_lagged'
     df_feature = df_feature.rename(columns={feature_col: lagged_col_name})
+
+    df_feature = df_feature.sort_values(by=time_col).reset_index(drop=True)
 
     # 5. Unione asincrona (merge_asof) per cercare il valore lagato più vicino
     df_merged = pd.merge_asof(
