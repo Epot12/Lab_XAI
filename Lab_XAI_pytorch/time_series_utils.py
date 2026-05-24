@@ -1,3 +1,5 @@
+import numpy as np
+
 def create_dataset_windows(data, target_col, time_col, lookback=12):
     """
     Crea finestre in cui X contiene il flusso e il mese dei passati 'lookback' mesi,

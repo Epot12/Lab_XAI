@@ -7,6 +7,6 @@ class LSTMRegressor(nn.Module):
     def forward(self, x):
         # out: (batch_size, seq_len, hidden_dim)
         out, _ = self.lstm(x)
-        # Prendiamo solo l'output dell'ultimo step della sequenza (il mese corrente)
+        # Prendiamo solo l'output dell'ultimo step della sequenza (il giorno corrente)
         out = out[:, -1, :]
         return self.linear(out)
