@@ -5,10 +5,10 @@ from torch import nn, optim
 from torch.utils.data import TensorDataset, DataLoader
 from tqdm import tqdm
 
-def train_pytorch_model(X_train, y_train, input_dim, model_class, epochs=1000, patience=10, batch_size=32):
+def train_pytorch_model(X_train, y_train, input_dim, model_class, epochs=1000, patience=10, batch_size=32, **model_kwargs):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = model_class(input_dim).to(device)
+    model = model_class(input_dim, **model_kwargs).to(device)
 
     # Keras (original code) with validation_split=0.1 takes the last 10% of the training data
     val_split_idx = int(len(X_train) * 0.9)
