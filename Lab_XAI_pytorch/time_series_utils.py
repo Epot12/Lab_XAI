@@ -18,6 +18,7 @@ def create_dataset_windows(data, target_col, time_col, lookback=12):
 import os
 import torch
 import pickle
+from datetime import datetime
 
 def save_lstm_and_scalers(model, scalers_dict, save_dir="saved_lstm", model_name="lstm_model.pth", scaler_name="lstm_scalers.pkl"):
     """
@@ -32,11 +33,16 @@ def save_lstm_and_scalers(model, scalers_dict, save_dir="saved_lstm", model_name
     """
     # 1. Creazione della cartella (se non esiste)
     os.makedirs(save_dir, exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     
-    # Costruzione dei percorsi completi in modo sicuro per ogni Sistema Operativo
-    model_path = os.path.join(save_dir, model_name)
-    scaler_path = os.path.join(save_dir, scaler_name)
+    model_base, model_ext = os.path.splitext(model_name)
+    scaler_base, scaler_ext = os.path.splitext(scaler_name)
     
+    model_name_ts = f"{model_base}_{timestamp}{model_ext}"
+    scaler_name_ts = f"{scaler_base}_{timestamp}{scaler_ext}"
+
+    model_path = os.path.join(save_dir, model_name_ts)
+    scaler_path = os.path.join(save_dir, scaler_name_ts)
     # 2. Salvataggio dei pesi del modello
     torch.save(model.state_dict(), model_path)
     
