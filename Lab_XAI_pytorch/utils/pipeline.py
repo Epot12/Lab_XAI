@@ -20,7 +20,7 @@ def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_siz
     
     os.makedirs(save_dir, exist_ok=True)
     os.makedirs(plots_dir, exist_ok=True)
-    
+    # SONO ARRIVATO QUI
     print(f"Created isolated environment at: {save_dir}")
 
     # ---------------------------------------------------------

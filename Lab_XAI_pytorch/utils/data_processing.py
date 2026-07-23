@@ -9,25 +9,25 @@ def load_and_preprocess_data(dataset_path="MARSIS_historical_dataset.csv", orbit
     Loads the dataset, applies the necessary filters, and removes any excluded columns.
     Returns the feature matrix X and the target vector y.
     """
-    # 1. Reading the orbits to be removed
+    # Reading the orbits to be removed
     orbit_to_remove = []
     with open(orbit_path) as file:
         for line in file:
             orbit_to_remove.append(float(line))
 
-    # 2. Loading dataset
+    # Loading dataset
     df = pd.read_csv(dataset_path, sep=";")
 
-    # 3. Frequency and orbits filtering
+    # Frequency and orbits filtering
     frequency_to_keep = 4000000.0
     df = df[df['FM_data_frequency'] == frequency_to_keep]
     df = df[~df.FM_data_orbit_number.isin(orbit_to_remove)]
 
-    # 4. Feature engineering
+    # Feature engineering
     df['FM_data_solar_longitude_cos'] = np.cos(df['FM_data_solar_longitude'])
     df['FM_data_solar_longitude_sin'] = np.sin(df['FM_data_solar_longitude'])
 
-    # 5. Eliminating unnecessary columns
+    # Eliminating unnecessary columns
     if keep_flux:
         X_df = df.drop(columns=[
             'FM_data_ephemeris_time', 'FM_data_frequency',
@@ -44,7 +44,7 @@ def load_and_preprocess_data(dataset_path="MARSIS_historical_dataset.csv", orbit
             'FM_data_peak_simulated_echo_power', 'FM_data_solar_longitude'
         ])
 
-    # 6. Extracting to NumPy array format
+    # Extracting to NumPy array format
     feature_names = X_df.columns.tolist()
     X = X_df.to_numpy()
     y = df['FM_data_peak_distorted_echo_power'].to_numpy()
