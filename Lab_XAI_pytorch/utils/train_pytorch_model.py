@@ -74,3 +74,65 @@ def train_pytorch_model(X_train, y_train, input_dim, model_class, epochs=1000, p
         model.load_state_dict(best_model_weights)
 
     return model, device, history
+
+import os
+import matplotlib.pyplot as plt
+from datetime import datetime
+
+def plot_and_save_history(history, save_dir="plots"):
+    """
+    Genera un grafico delle curve di apprendimento (Training e Validation Loss)
+    e lo salva in formato PNG e PDF con qualità da pubblicazione.
+    
+    Argomenti:
+    - history: Il dizionario restituito dalla funzione train_pytorch_model
+    - save_dir: La cartella in cui salvare i grafici (creata in automatico se non esiste)
+    """
+    # 1. Creazione della cartella di destinazione
+    os.makedirs(save_dir, exist_ok=True)
+    
+    # 2. Generazione del timestamp univoco (AnnoMeseGiorno_OreMinutiSecondi)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    
+    # 3. Impostazioni grafiche da pubblicazione
+    # Utilizziamo una buona dimensione e DPI alto per i font nitidi
+    plt.figure(figsize=(10, 6), dpi=300)
+    
+    # Stile delle linee
+    plt.plot(history['train_loss'], label='Training Loss', color='#1f77b4', linewidth=2)
+    plt.plot(history['val_loss'], label='Validation Loss', color='#ff7f0e', linewidth=2, linestyle='--')
+    
+    # 4. Formattazione di assi, titolo e legenda
+    plt.title('Curva di Apprendimento LSTM', fontsize=16, fontweight='bold', pad=15)
+    plt.xlabel('Epoche', fontsize=14)
+    plt.ylabel('Mean Squared Error (MSE)', fontsize=14)
+    
+    # Griglia leggera per facilitare la lettura
+    plt.grid(True, linestyle=':', alpha=0.7)
+    
+    # Aggiunta della legenda
+    plt.legend(loc='upper right', fontsize=12, framealpha=0.9)
+    
+    # Ottimizzazione dei bordi
+    plt.tight_layout()
+    
+    # 5. Salvataggio nei due formati richiesti
+    # Creiamo il percorso base senza estensione
+    base_filepath = os.path.join(save_dir, f"lstm_training_history_{timestamp}")
+    
+    # Salvataggio PNG
+    png_path = f"{base_filepath}.png"
+    plt.savefig(png_path, format='png', dpi=300, bbox_inches='tight')
+    
+    # Salvataggio PDF
+    pdf_path = f"{base_filepath}.pdf"
+    plt.savefig(pdf_path, format='pdf', bbox_inches='tight')
+    
+    print(f"\nGrafici salvati con successo in:")
+    print(f"- {png_path}")
+    print(f"- {pdf_path}")
+    
+    plt.show()
+    
+    # 7. Chiusura della figura per liberare memoria (utile nei notebook)
+    plt.close()
