@@ -82,7 +82,6 @@ def parse_generic_log(file_path):
         
     return maes
 
-# SONO ARRIVATO QUI
 
 
 def compare_experiments_pipeline(
@@ -94,40 +93,39 @@ def compare_experiments_pipeline(
     show_plots=True
 ):
     """
-    Pipeline universale per confrontare i Test MAE di due esperimenti qualsiasi
-    (PT vs PT, TF vs TF, PT vs TF) partendo dai file di log testuali.
+    Universal pipeline for comparing MAE test results from any two experiments
+    (PT vs. PT, TF vs. TF, PT vs. TF) starting from text-based log files.
     """
     os.makedirs(output_dir, exist_ok=True)
     print("=== Starting Experiment Comparison Analysis ===")
 
-    # Fase 1: Parsing dei due log
-    print(f"Analisi {exp1_label}...")
+    # log parsing
+    print(f"Analysis of {exp1_label}...")
     maes_exp1 = parse_generic_log(exp1_log_path)
     
-    print(f"Analisi {exp2_label}...")
+    print(f"Analysis of {exp2_label}...")
     maes_exp2 = parse_generic_log(exp2_log_path)
 
-    # Validazione dei dati estratti
+    # validation of extracted data
     num_folds = max(len(maes_exp1), len(maes_exp2))
     if num_folds == 0:
-        print("❌ Errore: Impossibile estrarre dati validi da entrambi i file. Verifica i formati.")
+        print("Error: Unable to extract valid data from either file. Check the formats.")
         return
 
-    # Se un esperimento ha meno fold dell'altro, pareggia con zeri o taglia per evitare crash nel grafico
     if len(maes_exp1) != len(maes_exp2):
-        print(f"⚠️ Attenzione: Numero di fold disallineato ({len(maes_exp1)} vs {len(maes_exp2)}).")
-        # Allinea le lunghezze riempiendo di NaN i valori mancanti
+        print(f"Warning: Number of folds mismatched ({len(maes_exp1)} vs {len(maes_exp2)}).")
+        # Aligns the lengths by filling missing values ​​with NaN
         while len(maes_exp1) < num_folds: maes_exp1.append(np.nan)
         while len(maes_exp2) < num_folds: maes_exp2.append(np.nan)
 
     # -----------------------------------------------------------------
-    # GENERAZIONE GRAFICO A BARRE COMPARATIVO
+    # Generating a comparative bar chart
     # -----------------------------------------------------------------
     folds = np.arange(num_folds)
     bar_width = 0.35
 
     plt.figure(figsize=(12, 5))
-    # Colore personalizzato per distinguere gli esperimenti
+    # Custom color to distinguish experiments
     plt.bar(folds - bar_width/2, maes_exp1, bar_width, label=exp1_label, color='#2C3E50')
     plt.bar(folds + bar_width/2, maes_exp2, bar_width, label=exp2_label, color='#16A085', alpha=0.9)
 
@@ -139,15 +137,15 @@ def compare_experiments_pipeline(
     plt.legend(fontsize=11)
     plt.tight_layout()
     
-    date_str = datetime.now().strftime("%Y%m%d")
-    # Creiamo il nome base pulito (senza estensione)
+    date_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+    # Creating base name
     filename_base = f"comparison_{date_str}_{exp1_label}_vs_{exp2_label}".replace(" ", "_").lower()
     
-    # Costruiamo i due percorsi separati
+    # building the two paths
     chart_path_png = os.path.join(output_dir, f"{filename_base}.png")
     chart_path_pdf = os.path.join(output_dir, f"{filename_base}.pdf")
     
-    # Salviamo in PNG e poi in PDF
+    # saving
     plt.savefig(chart_path_png, dpi=300, bbox_inches='tight')
     plt.savefig(chart_path_pdf, format='pdf', bbox_inches='tight')
     
@@ -156,21 +154,19 @@ def compare_experiments_pipeline(
     else:
         plt.close()
             
-    print(f"📊 Grafici salvati in:\n   - {chart_path_png}\n   - {chart_path_pdf}")
-    print("=== Processo di Confronto Completato ===")
+    print(f"Plots saved in:\n   - {chart_path_png}\n   - {chart_path_pdf}")
+    print("=== Comparison Process Completed ===")
 
 import io
 import base64
-from IPython.display import display, HTML
 
 def fig_to_html_element(fig):
     """
-    Salva la figura in memoria, la converte in stringa Base64 
-    e restituisce un blocco div HTML isolato.
+    Saves the image to memory, converts it to a Base64 string, and returns an isolated HTML div block.
     """
     buf = io.BytesIO()
     fig.savefig(buf, format='png', bbox_inches='tight', dpi=120)
     buf.seek(0)
     img_base64 = base64.b64encode(buf.read()).decode('utf-8')
-    plt.close(fig)  # Chiude la figura per evitare che si duplichi sotto
+    plt.close(fig)  # Closes the shape to prevent it from duplicating underneath.
     return f'<div style="flex: 1; min-width: 45%; padding: 5px;"><img src="data:image/png;base64,{img_base64}" style="width:100%; height:auto;"/></div>'
