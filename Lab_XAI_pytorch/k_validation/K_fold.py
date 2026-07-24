@@ -39,26 +39,26 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
         
         if is_ebm:
             kwargs = model_kwargs if model_kwargs is not None else {}
-            # Flusso EBM (Scikit-Learn style)
+            # EBM flux (Scikit-Learn style)
             model = model_class(n_jobs=-1, random_state=seed_ebm, **kwargs)
             model.fit(X_train, y_train)
             
-            # Storia vuota per non rompere la struttura dati attesa
+            # Empty history to avoid breaking the expected data structure
             all_histories.append({'train_loss': [], 'val_loss': []})
             
-            # Salvataggio EBM con Joblib
+            # saving EBM with Joblib
             dump(model, os.path.join(save_dir, f'model_{exp_name}_{fold}.save'))
             
-            # Inferenza diretta NumPy
+            # inference
             y_train_pred = model.predict(X_train)
             y_pred_np = model.predict(X_test).flatten()
             
-            # Metriche via Sklearn
+            # Sklearn metrics
             train_mse = mean_squared_error(y_train, y_train_pred)
             test_mse = mean_squared_error(y_test, y_pred_np)
             train_mae = mean_absolute_error(y_train, y_train_pred)
             test_mae = mean_absolute_error(y_test, y_pred_np)
-
+# SONO ARRIVATO QUI
         else:
             scaler = StandardScaler()
             X_train = scaler.fit_transform(X_train)
