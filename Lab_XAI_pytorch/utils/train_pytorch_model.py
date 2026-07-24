@@ -36,7 +36,7 @@ def train_pytorch_model(X_train, y_train, input_dim, model_class, epochs=1000, p
     pbar = tqdm(range(epochs), desc="Training", leave=False)
 
     for epoch in pbar:
-        model.train()  # Training Mode (Dropout Enabled)
+        model.train()  # Training Mode 
         batch_losses = []
         for batch_X, batch_y in train_loader:
             optimizer.zero_grad()
@@ -50,7 +50,7 @@ def train_pytorch_model(X_train, y_train, input_dim, model_class, epochs=1000, p
         epoch_train_loss = np.mean(batch_losses)
 
         # Validation and Early Stopping
-        model.eval()  # Inference Mode (disable Dropout)
+        model.eval()  # Inference Mode 
         with torch.no_grad():
             val_predictions = model(X_val_t)
             val_loss = criterion(val_predictions, y_val_t).item()
@@ -81,58 +81,52 @@ from datetime import datetime
 
 def plot_and_save_history(history, save_dir="plots"):
     """
-    Genera un grafico delle curve di apprendimento (Training e Validation Loss)
-    e lo salva in formato PNG e PDF con qualità da pubblicazione.
+    Generates a learning curve plot (Training and Validation Loss)
+    and saves it in high-quality PNG and PDF formats.
     
-    Argomenti:
-    - history: Il dizionario restituito dalla funzione train_pytorch_model
-    - save_dir: La cartella in cui salvare i grafici (creata in automatico se non esiste)
+    Parameters:
+    - history: The dictionary returned by the train_pytorch_model function
+    - save_dir: The folder where the plots will be saved (created automatically if it does not exist)
     """
-    # 1. Creazione della cartella di destinazione
+    # Creating destination folder
     os.makedirs(save_dir, exist_ok=True)
     
-    # 2. Generazione del timestamp univoco (AnnoMeseGiorno_OreMinutiSecondi)
+    # Generation of the unique timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     
-    # 3. Impostazioni grafiche da pubblicazione
-    # Utilizziamo una buona dimensione e DPI alto per i font nitidi
+    # plotting settings
     plt.figure(figsize=(10, 6), dpi=300)
     
-    # Stile delle linee
+    # lines style
     plt.plot(history['train_loss'], label='Training Loss', color='#1f77b4', linewidth=2)
     plt.plot(history['val_loss'], label='Validation Loss', color='#ff7f0e', linewidth=2, linestyle='--')
     
-    # 4. Formattazione di assi, titolo e legenda
-    plt.title('Curva di Apprendimento LSTM', fontsize=16, fontweight='bold', pad=15)
-    plt.xlabel('Epoche', fontsize=14)
-    plt.ylabel('Mean Squared Error (MSE)', fontsize=14)
+    # Formatting axes, title, and legend
+    plt.title('Learning Curve', fontsize=16, fontweight='bold', pad=15)
+    plt.xlabel('Epochs', fontsize=14)
+    plt.ylabel('Metrics', fontsize=14)
     
-    # Griglia leggera per facilitare la lettura
     plt.grid(True, linestyle=':', alpha=0.7)
     
-    # Aggiunta della legenda
     plt.legend(loc='upper right', fontsize=12, framealpha=0.9)
     
-    # Ottimizzazione dei bordi
     plt.tight_layout()
     
-    # 5. Salvataggio nei due formati richiesti
-    # Creiamo il percorso base senza estensione
-    base_filepath = os.path.join(save_dir, f"lstm_training_history_{timestamp}")
+    # Saving
+    base_filepath = os.path.join(save_dir, f"training_history_{timestamp}")
     
-    # Salvataggio PNG
+    # PNG
     png_path = f"{base_filepath}.png"
     plt.savefig(png_path, format='png', dpi=300, bbox_inches='tight')
     
-    # Salvataggio PDF
+    # PDF
     pdf_path = f"{base_filepath}.pdf"
     plt.savefig(pdf_path, format='pdf', bbox_inches='tight')
     
-    print(f"\nGrafici salvati con successo in:")
+    print(f"\nPlots successfully saved to:")
     print(f"- {png_path}")
     print(f"- {pdf_path}")
     
     plt.show()
     
-    # 7. Chiusura della figura per liberare memoria (utile nei notebook)
     plt.close()

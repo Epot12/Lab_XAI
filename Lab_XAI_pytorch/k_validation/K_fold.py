@@ -58,7 +58,7 @@ def k_fold_val(X, y, model_class, save_dir, n_splits=10, epochs=1000, patience=1
             test_mse = mean_squared_error(y_test, y_pred_np)
             train_mae = mean_absolute_error(y_train, y_train_pred)
             test_mae = mean_absolute_error(y_test, y_pred_np)
-# SONO ARRIVATO QUI
+
         else:
             scaler = StandardScaler()
             X_train = scaler.fit_transform(X_train)
