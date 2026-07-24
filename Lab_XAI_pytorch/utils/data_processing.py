@@ -54,15 +54,13 @@ def load_and_preprocess_data(dataset_path="MARSIS_historical_dataset.csv", orbit
 import os
 import re
 import matplotlib.pyplot as plt
-import numpy as np
 
 def parse_generic_log(file_path):
     """
-    Rileva automaticamente il formato del file log (TF o PT) 
-    e ne estrae i Test MAE finali di ogni fold.
+    It automatically detects the log file format (TF or PT) and extracts the final MAE test scores for each fold.
     """
     if not os.path.exists(file_path):
-        print(f"⚠️ File non trovato: {file_path}")
+        print(f"File not found: {file_path}")
         return []
 
     with open(file_path, "r", encoding="utf-8") as f:
@@ -70,19 +68,21 @@ def parse_generic_log(file_path):
 
     maes = []
     
-    # FORMATO DI TIPO 1: PyTorch (MAE = X.XXX)
+    # FORMAT 1: PyTorch (MAE)
     if "MAE =" in log_text or "Global MAE" in log_text:
-        # Isola i singoli fold prima del riepilogo globale
+        # Isolates the individual folds before the overall summary.
         folds_raw = log_text.split("Global MAE")[0] if "Global MAE" in log_text else log_text
         maes = [float(x) for x in re.findall(r"MAE\s*=\s*([\d.]+)", folds_raw)]
-        print(f"-> Rilevato formato PyTorch. Estratti {len(maes)} valori MAE.")
+        print(f"-> PyTorch format detected. {len(maes)} MAE values extracted.")
         
-    # FORMATO DI TIPO 2: TensorFlow / Keras (Train: X.X, Test: X.XXX)
+    # FORMAT 2: TensorFlow / Keras (Train, Test)
     elif "Test:" in log_text:
         maes = [float(x) for x in re.findall(r"Train:\s*[\d.]+,\s*Test:\s*([\d.]+)", log_text)]
-        print(f"-> Rilevato formato TensorFlow. Estratti {len(maes)} valori MAE.")
+        print(f"-> TensorFlow format detected. {len(maes)} MAE values extracted.")
         
     return maes
+
+# SONO ARRIVATO QUI
 
 
 def compare_experiments_pipeline(
