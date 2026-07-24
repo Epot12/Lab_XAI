@@ -60,7 +60,7 @@ def pipeline(X, y, model_class, n_splits=10, epochs=1000, patience=10, batch_siz
             plt.grid(True, linestyle='--', alpha=0.7)
             plt.tight_layout()
 
-            # saving directly into the plot subfolder of THIS experiment
+            # saving directly into the plot subfolder of this experiment
             plt.savefig(os.path.join(plots_dir, f"fold_{target_fold}.png"), dpi=600, bbox_inches='tight')
             plt.savefig(os.path.join(plots_dir, f"fold_{target_fold}.pdf"), format='pdf', bbox_inches='tight')
             plt.close(fig_save) 
