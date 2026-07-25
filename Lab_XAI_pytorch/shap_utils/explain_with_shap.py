@@ -51,12 +51,12 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
         
     X_bg_scaled = scaler.transform(X_bg_sampled)
     X_test_scaled = scaler.transform(X_test_sampled)
-# SONO ARRIVATO QUI
-    # 4. Converting in PyTorch tensors
+
+    # Converting in PyTorch tensors
     tensor_bg = torch.tensor(X_bg_scaled, dtype=torch.float32).to(device)
     tensor_test = torch.tensor(X_test_scaled, dtype=torch.float32).to(device)
 
-    # 5. Loading model weights
+    # Loading model weights
     try:
         model.load_state_dict(torch.load(weights_path, map_location=device, weights_only=True))
     except FileNotFoundError:
@@ -67,7 +67,7 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
 
     print(f"SHAP calculation (Background: {len(X_bg_sampled)} samples, Test: {len(X_test_sampled)} samples)...")
     
-    # 6. Starting Explainer and Calculation
+    # Starting Explainer and Calculation
     explainer = shap.DeepExplainer(model, tensor_bg)
     shap_values = explainer.shap_values(tensor_test, check_additivity=False)
 
