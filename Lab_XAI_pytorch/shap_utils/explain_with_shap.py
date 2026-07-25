@@ -5,7 +5,7 @@ import pandas as pd
 from joblib import load
 import matplotlib.pyplot as plt
 
-def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test_raw, feature_names, bg_limit=500, test_limit=None):
+def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test_raw, bg_limit=500, test_limit=None):
     """
     Performs SHAP analysis on a trained PyTorch model and generates the summary plot.
     
@@ -16,7 +16,7 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
     - X_background_raw: Numpy array of training data (used to define the SHAP background)
     - X_test_raw: Numpy array of data to be explained (e.g., the test set or an outlier sample)
     - feature_names: List of strings with column names
-    - bg_limit: Maximum number of background samples to use (500-1000 is recommended)
+    - bg_limit: Maximum number of background samples to use 
     - test_limit: Maximum number of test samples to explain (None to explain them all)
     
     Returns:
@@ -26,11 +26,11 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
     print(f"\n=== STARTING SHAP PIPELINE ===")
     print(f"Model: {weights_path} | Scaler: {scaler_path}")
     
-    # 1. Setup Device
+    # Setup Device
     device = torch.device("cpu")
     print(f"Forced device for SHAP stability: {device}")
 
-    # 2. Sampling data
+    # Sampling data
     if bg_limit and len(X_background_raw) > bg_limit:
         # Takes a random sample for the background if the data is too large
         idx_bg = np.random.choice(len(X_background_raw), bg_limit, replace=False)
@@ -43,7 +43,7 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
     else:
         X_test_sampled = X_test_raw
 
-    # 3. Loading Scaler and normalization
+    # Loading Scaler and normalization
     try:
         scaler = load(scaler_path)
     except FileNotFoundError:
@@ -51,7 +51,7 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
         
     X_bg_scaled = scaler.transform(X_bg_sampled)
     X_test_scaled = scaler.transform(X_test_sampled)
-
+# SONO ARRIVATO QUI
     # 4. Converting in PyTorch tensors
     tensor_bg = torch.tensor(X_bg_scaled, dtype=torch.float32).to(device)
     tensor_test = torch.tensor(X_test_scaled, dtype=torch.float32).to(device)
@@ -97,14 +97,14 @@ def extract_feature_names(dataset_path="Data/MARSIS_historical_dataset.csv", kee
     Returns:
     - A list of strings containing the exact names of the features seen by the model.
     """
-    # 1. reading only the first line of the original file to be quick
+    # reading only the first line of the original file to be quick
     df_temp = pd.read_csv(dataset_path, sep=";", nrows=1)
 
-    # 2. adding the two fake features for engineering
+    # adding the two fake features for engineering
     df_temp['FM_data_solar_longitude_cos'] = 0.0
     df_temp['FM_data_solar_longitude_sin'] = 0.0
 
-    # 3. defining the columns that should ALWAYS BE DELETED
+    # defining the columns that should always be deleted
     columns_to_delete = [
         'FM_data_ephemeris_time', 'FM_data_frequency',
         'FM_data_median_corrected_echo_power', 'FM_data_orbit_number',
@@ -112,11 +112,11 @@ def extract_feature_names(dataset_path="Data/MARSIS_historical_dataset.csv", kee
         'FM_data_peak_simulated_echo_power', 'FM_data_solar_longitude'
     ]
 
-    # 4. Logic for solar flux: if we do NOT want to keep it, we add it to the delete list
+    # Logic for solar flux: if we do not want to keep it, we add it to the delete list
     if not keep_flux:
         columns_to_delete.append('FM_data_F10_7_index')
 
-    # 5. dropping and saving the list of remaining names
+    # dropping and saving the list of remaining names
     feature_names = df_temp.drop(columns=columns_to_delete, errors='ignore').columns.tolist()
 
     return feature_names
