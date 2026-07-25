@@ -15,7 +15,6 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
     - scaler_path: Path to the scaler saved for that fold (e.g. 'scaler_chrono_0.save')
     - X_background_raw: Numpy array of training data (used to define the SHAP background)
     - X_test_raw: Numpy array of data to be explained (e.g., the test set or an outlier sample)
-    - feature_names: List of strings with column names
     - bg_limit: Maximum number of background samples to use 
     - test_limit: Maximum number of test samples to explain (None to explain them all)
     
@@ -78,8 +77,6 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
     elif isinstance(shap_values, np.ndarray) and len(shap_values.shape) == 3:
         shap_values = shap_values[:, :, 0]
 
-    print("Generating plot...")
-    
     print("SHAP calculation completed.")
     
     return shap_values, X_test_scaled, explainer
