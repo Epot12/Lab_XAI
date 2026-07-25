@@ -83,7 +83,7 @@ def explain_with_shap(model, weights_path, scaler_path, X_background_raw, X_test
     print("SHAP calculation completed.")
     
     return shap_values, X_test_scaled, explainer
-# SONO ARRIVATO QUI
+
 
 
 def extract_feature_names(dataset_path="Data/MARSIS_historical_dataset.csv", keep_flux=False):
