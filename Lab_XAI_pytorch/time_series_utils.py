@@ -22,16 +22,16 @@ from datetime import datetime
 
 def save_lstm_and_scalers(model, scalers_dict, save_dir="saved_lstm", model_name="lstm_model.pth", scaler_name="lstm_scalers.pkl"):
     """
-    Salva i pesi di un modello PyTorch (LSTM) e i relativi scaler su disco.
-    
-    Parametri:
-    - model: Il modello PyTorch addestrato.
-    - scalers_dict (dict): Dizionario contenente gli scaler da salvare.
-    - save_dir (str): Il percorso della cartella dove salvare i file.
-    - model_name (str): Il nome del file per i pesi del modello.
-    - scaler_name (str): Il nome del file per il salvataggio degli scaler.
+    Saves PyTorch model (LSTM) weights and associated scalers to disk.
+
+    Parameters:
+    - model: The trained PyTorch model.
+    - scalers_dict (dict): Dictionary containing the scalers to be saved.
+    - save_dir (str): Path to the directory where files will be saved.
+    - model_name (str): Filename for the model weights.
+    - scaler_name (str): Filename for saving the scalers.
     """
-    # 1. Creazione della cartella (se non esiste)
+    # creation of the folder
     os.makedirs(save_dir, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     
@@ -43,14 +43,14 @@ def save_lstm_and_scalers(model, scalers_dict, save_dir="saved_lstm", model_name
 
     model_path = os.path.join(save_dir, model_name_ts)
     scaler_path = os.path.join(save_dir, scaler_name_ts)
-    # 2. Salvataggio dei pesi del modello
+    # saving model weights
     torch.save(model.state_dict(), model_path)
     
-    # 3. Salvataggio degli scaler tramite pickle
+    # saving scalers
     with open(scaler_path, "wb") as f:
         pickle.dump(scalers_dict, f)
         
-    print(f"✅ Operazione completata con successo!")
-    print(f"   - Pesi modello salvati in: {model_path}")
-    print(f"   - Scaler salvati in:       {scaler_path}")
+    print(f"Operation successfully completed!")
+    print(f"   - Model weights saved in: {model_path}")
+    print(f"   - Scalers saved in:       {scaler_path}")
 
