@@ -1,0 +1,350 @@
+/usr/local/lib/python3.12/dist-packages/keras/src/layers/core/dense.py:106: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Epoch 1/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 127s 2ms/step - loss: 14.1612 - mean_absolute_error: 2.8728 - val_loss: 12.4646 - val_mean_absolute_error: 2.7184
+Epoch 2/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 99s 2ms/step - loss: 10.0293 - mean_absolute_error: 2.4520 - val_loss: 13.1863 - val_mean_absolute_error: 2.8440
+Epoch 3/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.5537 - mean_absolute_error: 2.3886 - val_loss: 12.9140 - val_mean_absolute_error: 2.7957
+Epoch 4/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.3639 - mean_absolute_error: 2.3592 - val_loss: 14.5628 - val_mean_absolute_error: 2.9015
+Epoch 5/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 99s 2ms/step - loss: 9.2432 - mean_absolute_error: 2.3431 - val_loss: 11.8453 - val_mean_absolute_error: 2.5893
+Epoch 6/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.1867 - mean_absolute_error: 2.3344 - val_loss: 12.1782 - val_mean_absolute_error: 2.6017
+Epoch 7/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.1511 - mean_absolute_error: 2.3279 - val_loss: 12.4127 - val_mean_absolute_error: 2.5945
+Epoch 8/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.1458 - mean_absolute_error: 2.3281 - val_loss: 13.1144 - val_mean_absolute_error: 2.6961
+Epoch 9/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.1300 - mean_absolute_error: 2.3257 - val_loss: 13.6319 - val_mean_absolute_error: 2.8200
+Epoch 10/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.1630 - mean_absolute_error: 2.3286 - val_loss: 12.5079 - val_mean_absolute_error: 2.6379
+Epoch 11/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.1692 - mean_absolute_error: 2.3291 - val_loss: 12.0402 - val_mean_absolute_error: 2.6539
+Epoch 12/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.1662 - mean_absolute_error: 2.3287 - val_loss: 12.9789 - val_mean_absolute_error: 2.6963
+Epoch 13/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.1903 - mean_absolute_error: 2.3297 - val_loss: 13.3596 - val_mean_absolute_error: 2.7675
+Epoch 14/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.2093 - mean_absolute_error: 2.3320 - val_loss: 13.2107 - val_mean_absolute_error: 2.6897
+Epoch 15/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.2279 - mean_absolute_error: 2.3358 - val_loss: 14.1630 - val_mean_absolute_error: 2.8080
+Epoch 15: early stopping
+Train: 2.105, Test: 2.590
+5956/5956 ━━━━━━━━━━━━━━━━━━━━ 8s 1ms/step
+/usr/local/lib/python3.12/dist-packages/keras/src/layers/core/dense.py:106: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Epoch 1/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 117s 2ms/step - loss: 13.8951 - mean_absolute_error: 2.8250 - val_loss: 12.4616 - val_mean_absolute_error: 2.6875
+Epoch 2/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.9004 - mean_absolute_error: 2.4231 - val_loss: 14.2728 - val_mean_absolute_error: 2.8563
+Epoch 3/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.3984 - mean_absolute_error: 2.3557 - val_loss: 13.7542 - val_mean_absolute_error: 2.7908
+Epoch 4/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.2417 - mean_absolute_error: 2.3343 - val_loss: 13.3173 - val_mean_absolute_error: 2.7087
+Epoch 5/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.1920 - mean_absolute_error: 2.3267 - val_loss: 13.2108 - val_mean_absolute_error: 2.7232
+Epoch 6/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.1599 - mean_absolute_error: 2.3218 - val_loss: 14.5432 - val_mean_absolute_error: 2.8732
+Epoch 7/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.1196 - mean_absolute_error: 2.3159 - val_loss: 14.0340 - val_mean_absolute_error: 2.8020
+Epoch 8/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.1305 - mean_absolute_error: 2.3160 - val_loss: 14.6957 - val_mean_absolute_error: 2.8947
+Epoch 9/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.1348 - mean_absolute_error: 2.3142 - val_loss: 12.4784 - val_mean_absolute_error: 2.6621
+Epoch 10/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.1378 - mean_absolute_error: 2.3153 - val_loss: 13.6033 - val_mean_absolute_error: 2.7936
+Epoch 11/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.1647 - mean_absolute_error: 2.3178 - val_loss: 14.4094 - val_mean_absolute_error: 2.8396
+Epoch 11: early stopping
+Train: 2.037, Test: 2.579
+5956/5956 ━━━━━━━━━━━━━━━━━━━━ 8s 1ms/step
+/usr/local/lib/python3.12/dist-packages/keras/src/layers/core/dense.py:106: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Epoch 1/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 112s 2ms/step - loss: 13.6091 - mean_absolute_error: 2.7916 - val_loss: 12.1029 - val_mean_absolute_error: 2.7589
+Epoch 2/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.9246 - mean_absolute_error: 2.4246 - val_loss: 11.9119 - val_mean_absolute_error: 2.6613
+Epoch 3/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.4222 - mean_absolute_error: 2.3577 - val_loss: 12.4378 - val_mean_absolute_error: 2.7448
+Epoch 4/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.2555 - mean_absolute_error: 2.3335 - val_loss: 12.6261 - val_mean_absolute_error: 2.7235
+Epoch 5/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.1606 - mean_absolute_error: 2.3200 - val_loss: 12.4205 - val_mean_absolute_error: 2.7372
+Epoch 6/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.1021 - mean_absolute_error: 2.3110 - val_loss: 12.4083 - val_mean_absolute_error: 2.7156
+Epoch 7/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.0944 - mean_absolute_error: 2.3083 - val_loss: 12.1915 - val_mean_absolute_error: 2.6953
+Epoch 8/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.0845 - mean_absolute_error: 2.3059 - val_loss: 12.4123 - val_mean_absolute_error: 2.6985
+Epoch 9/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.0704 - mean_absolute_error: 2.3052 - val_loss: 13.2139 - val_mean_absolute_error: 2.8465
+Epoch 10/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.0769 - mean_absolute_error: 2.3046 - val_loss: 12.2685 - val_mean_absolute_error: 2.6902
+Epoch 11/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.0681 - mean_absolute_error: 2.3003 - val_loss: 12.3992 - val_mean_absolute_error: 2.7056
+Epoch 12/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.1013 - mean_absolute_error: 2.3053 - val_loss: 12.4464 - val_mean_absolute_error: 2.6773
+Epoch 12: early stopping
+Train: 2.029, Test: 2.604
+5956/5956 ━━━━━━━━━━━━━━━━━━━━ 8s 1ms/step
+/usr/local/lib/python3.12/dist-packages/keras/src/layers/core/dense.py:106: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Epoch 1/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 112s 2ms/step - loss: 13.7555 - mean_absolute_error: 2.8112 - val_loss: 11.7493 - val_mean_absolute_error: 2.6179
+Epoch 2/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.7807 - mean_absolute_error: 2.4087 - val_loss: 14.5653 - val_mean_absolute_error: 2.8781
+Epoch 3/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.3074 - mean_absolute_error: 2.3446 - val_loss: 12.6302 - val_mean_absolute_error: 2.6839
+Epoch 4/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.1387 - mean_absolute_error: 2.3214 - val_loss: 12.9389 - val_mean_absolute_error: 2.7352
+Epoch 5/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.0666 - mean_absolute_error: 2.3119 - val_loss: 13.5801 - val_mean_absolute_error: 2.7709
+Epoch 6/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.0436 - mean_absolute_error: 2.3071 - val_loss: 13.4122 - val_mean_absolute_error: 2.7803
+Epoch 7/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.0563 - mean_absolute_error: 2.3070 - val_loss: 14.5878 - val_mean_absolute_error: 2.8165
+Epoch 8/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.0426 - mean_absolute_error: 2.3048 - val_loss: 15.4164 - val_mean_absolute_error: 2.8518
+Epoch 9/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.0340 - mean_absolute_error: 2.3043 - val_loss: 15.3528 - val_mean_absolute_error: 2.9038
+Epoch 10/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.0659 - mean_absolute_error: 2.3067 - val_loss: 13.7294 - val_mean_absolute_error: 2.7886
+Epoch 11/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.1043 - mean_absolute_error: 2.3096 - val_loss: 14.2354 - val_mean_absolute_error: 2.7487
+Epoch 11: early stopping
+Train: 2.060, Test: 3.011
+5956/5956 ━━━━━━━━━━━━━━━━━━━━ 8s 1ms/step
+/usr/local/lib/python3.12/dist-packages/keras/src/layers/core/dense.py:106: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Epoch 1/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 112s 2ms/step - loss: 12.9015 - mean_absolute_error: 2.7155 - val_loss: 12.3502 - val_mean_absolute_error: 2.7247
+Epoch 2/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.3761 - mean_absolute_error: 2.3541 - val_loss: 11.9687 - val_mean_absolute_error: 2.6076
+Epoch 3/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.9239 - mean_absolute_error: 2.2940 - val_loss: 11.8627 - val_mean_absolute_error: 2.6335
+Epoch 4/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.7682 - mean_absolute_error: 2.2717 - val_loss: 11.0347 - val_mean_absolute_error: 2.4579
+Epoch 5/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.6934 - mean_absolute_error: 2.2612 - val_loss: 11.6032 - val_mean_absolute_error: 2.5272
+Epoch 6/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.6434 - mean_absolute_error: 2.2529 - val_loss: 11.3952 - val_mean_absolute_error: 2.5380
+Epoch 7/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 8.6548 - mean_absolute_error: 2.2522 - val_loss: 11.6243 - val_mean_absolute_error: 2.5561
+Epoch 8/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.5934 - mean_absolute_error: 2.2433 - val_loss: 11.3949 - val_mean_absolute_error: 2.5361
+Epoch 9/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 8.5940 - mean_absolute_error: 2.2423 - val_loss: 11.8652 - val_mean_absolute_error: 2.5534
+Epoch 10/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 8.5909 - mean_absolute_error: 2.2413 - val_loss: 11.1204 - val_mean_absolute_error: 2.5039
+Epoch 11/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.6011 - mean_absolute_error: 2.2418 - val_loss: 12.0986 - val_mean_absolute_error: 2.5919
+Epoch 12/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 8.6062 - mean_absolute_error: 2.2428 - val_loss: 12.8284 - val_mean_absolute_error: 2.6799
+Epoch 13/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 8.6496 - mean_absolute_error: 2.2473 - val_loss: 11.6150 - val_mean_absolute_error: 2.5242
+Epoch 14/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.6886 - mean_absolute_error: 2.2510 - val_loss: 11.8929 - val_mean_absolute_error: 2.5726
+Epoch 14: early stopping
+Train: 2.010, Test: 4.052
+5956/5956 ━━━━━━━━━━━━━━━━━━━━ 9s 1ms/step
+/usr/local/lib/python3.12/dist-packages/keras/src/layers/core/dense.py:106: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Epoch 1/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 113s 2ms/step - loss: 12.4460 - mean_absolute_error: 2.6778 - val_loss: 11.6595 - val_mean_absolute_error: 2.6253
+Epoch 2/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 103s 2ms/step - loss: 9.3197 - mean_absolute_error: 2.3528 - val_loss: 10.8973 - val_mean_absolute_error: 2.4729
+Epoch 3/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 103s 2ms/step - loss: 8.8382 - mean_absolute_error: 2.2873 - val_loss: 12.2168 - val_mean_absolute_error: 2.5883
+Epoch 4/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 103s 2ms/step - loss: 8.6940 - mean_absolute_error: 2.2659 - val_loss: 12.5426 - val_mean_absolute_error: 2.6398
+Epoch 5/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 103s 2ms/step - loss: 8.5762 - mean_absolute_error: 2.2505 - val_loss: 12.1298 - val_mean_absolute_error: 2.5574
+Epoch 6/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.5365 - mean_absolute_error: 2.2435 - val_loss: 12.7842 - val_mean_absolute_error: 2.6131
+Epoch 7/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.5150 - mean_absolute_error: 2.2392 - val_loss: 11.7257 - val_mean_absolute_error: 2.5449
+Epoch 8/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.5117 - mean_absolute_error: 2.2382 - val_loss: 12.5417 - val_mean_absolute_error: 2.6116
+Epoch 9/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.4907 - mean_absolute_error: 2.2344 - val_loss: 12.7282 - val_mean_absolute_error: 2.6753
+Epoch 10/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.5079 - mean_absolute_error: 2.2355 - val_loss: 12.6796 - val_mean_absolute_error: 2.6564
+Epoch 11/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.5470 - mean_absolute_error: 2.2388 - val_loss: 12.3484 - val_mean_absolute_error: 2.6298
+Epoch 12/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.5725 - mean_absolute_error: 2.2421 - val_loss: 13.3455 - val_mean_absolute_error: 2.7042
+Epoch 12: early stopping
+Train: 2.010, Test: 5.211
+5956/5956 ━━━━━━━━━━━━━━━━━━━━ 9s 1ms/step
+/usr/local/lib/python3.12/dist-packages/keras/src/layers/core/dense.py:106: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Epoch 1/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 113s 2ms/step - loss: 12.8060 - mean_absolute_error: 2.7080 - val_loss: 12.4919 - val_mean_absolute_error: 2.6849
+Epoch 2/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.4929 - mean_absolute_error: 2.3687 - val_loss: 12.7298 - val_mean_absolute_error: 2.6675
+Epoch 3/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.0077 - mean_absolute_error: 2.3018 - val_loss: 12.4210 - val_mean_absolute_error: 2.6566
+Epoch 4/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 103s 2ms/step - loss: 8.8238 - mean_absolute_error: 2.2764 - val_loss: 13.1065 - val_mean_absolute_error: 2.7559
+Epoch 5/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.7122 - mean_absolute_error: 2.2612 - val_loss: 12.6450 - val_mean_absolute_error: 2.7045
+Epoch 6/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.6557 - mean_absolute_error: 2.2531 - val_loss: 14.3075 - val_mean_absolute_error: 2.8402
+Epoch 7/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.6313 - mean_absolute_error: 2.2478 - val_loss: 13.5302 - val_mean_absolute_error: 2.8007
+Epoch 8/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.6193 - mean_absolute_error: 2.2453 - val_loss: 13.4711 - val_mean_absolute_error: 2.7611
+Epoch 9/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.6055 - mean_absolute_error: 2.2427 - val_loss: 12.7495 - val_mean_absolute_error: 2.6778
+Epoch 10/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.6041 - mean_absolute_error: 2.2424 - val_loss: 12.4182 - val_mean_absolute_error: 2.6365
+Epoch 11/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.6177 - mean_absolute_error: 2.2426 - val_loss: 11.8514 - val_mean_absolute_error: 2.6178
+Epoch 12/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.6355 - mean_absolute_error: 2.2443 - val_loss: 13.4041 - val_mean_absolute_error: 2.7715
+Epoch 13/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.6260 - mean_absolute_error: 2.2431 - val_loss: 12.6497 - val_mean_absolute_error: 2.6972
+Epoch 14/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.6805 - mean_absolute_error: 2.2477 - val_loss: 13.6575 - val_mean_absolute_error: 2.7710
+Epoch 15/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.7259 - mean_absolute_error: 2.2537 - val_loss: 13.3205 - val_mean_absolute_error: 2.7622
+Epoch 16/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.7623 - mean_absolute_error: 2.2558 - val_loss: 13.8843 - val_mean_absolute_error: 2.8138
+Epoch 17/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.7597 - mean_absolute_error: 2.2548 - val_loss: 15.0378 - val_mean_absolute_error: 2.9004
+Epoch 18/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.7788 - mean_absolute_error: 2.2588 - val_loss: 13.1408 - val_mean_absolute_error: 2.7123
+Epoch 19/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 8.8096 - mean_absolute_error: 2.2616 - val_loss: 14.3217 - val_mean_absolute_error: 2.8494
+Epoch 20/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.8697 - mean_absolute_error: 2.2696 - val_loss: 15.1740 - val_mean_absolute_error: 2.9148
+Epoch 21/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.9125 - mean_absolute_error: 2.2748 - val_loss: 14.0717 - val_mean_absolute_error: 2.7978
+Epoch 21: early stopping
+Train: 2.076, Test: 4.559
+5956/5956 ━━━━━━━━━━━━━━━━━━━━ 8s 1ms/step
+/usr/local/lib/python3.12/dist-packages/keras/src/layers/core/dense.py:106: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Epoch 1/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 112s 2ms/step - loss: 13.3312 - mean_absolute_error: 2.7749 - val_loss: 13.1994 - val_mean_absolute_error: 2.8373
+Epoch 2/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.7336 - mean_absolute_error: 2.4093 - val_loss: 14.6725 - val_mean_absolute_error: 2.9492
+Epoch 3/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.2504 - mean_absolute_error: 2.3439 - val_loss: 13.6309 - val_mean_absolute_error: 2.8237
+Epoch 4/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 100s 2ms/step - loss: 9.0398 - mean_absolute_error: 2.3164 - val_loss: 13.5632 - val_mean_absolute_error: 2.8032
+Epoch 5/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.9505 - mean_absolute_error: 2.3024 - val_loss: 12.4852 - val_mean_absolute_error: 2.6295
+Epoch 6/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.9208 - mean_absolute_error: 2.2969 - val_loss: 13.5227 - val_mean_absolute_error: 2.7998
+Epoch 7/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.8790 - mean_absolute_error: 2.2913 - val_loss: 13.8557 - val_mean_absolute_error: 2.8010
+Epoch 8/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.8690 - mean_absolute_error: 2.2879 - val_loss: 13.0577 - val_mean_absolute_error: 2.7402
+Epoch 9/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.8623 - mean_absolute_error: 2.2859 - val_loss: 13.8441 - val_mean_absolute_error: 2.7786
+Epoch 10/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.8944 - mean_absolute_error: 2.2894 - val_loss: 14.0934 - val_mean_absolute_error: 2.8532
+Epoch 11/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.8593 - mean_absolute_error: 2.2839 - val_loss: 12.7407 - val_mean_absolute_error: 2.6868
+Epoch 12/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.8625 - mean_absolute_error: 2.2849 - val_loss: 13.1883 - val_mean_absolute_error: 2.7166
+Epoch 13/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.8782 - mean_absolute_error: 2.2852 - val_loss: 12.6192 - val_mean_absolute_error: 2.6678
+Epoch 14/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.8712 - mean_absolute_error: 2.2839 - val_loss: 13.0735 - val_mean_absolute_error: 2.7149
+Epoch 15/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 8.8582 - mean_absolute_error: 2.2828 - val_loss: 13.3862 - val_mean_absolute_error: 2.7541
+Epoch 15: early stopping
+Train: 2.165, Test: 3.285
+5956/5956 ━━━━━━━━━━━━━━━━━━━━ 9s 1ms/step
+/usr/local/lib/python3.12/dist-packages/keras/src/layers/core/dense.py:106: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Epoch 1/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 112s 2ms/step - loss: 13.5243 - mean_absolute_error: 2.7814 - val_loss: 10.8833 - val_mean_absolute_error: 2.4685
+Epoch 2/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 10.1496 - mean_absolute_error: 2.4529 - val_loss: 11.4816 - val_mean_absolute_error: 2.5463
+Epoch 3/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.6380 - mean_absolute_error: 2.3872 - val_loss: 14.0700 - val_mean_absolute_error: 2.8105
+Epoch 4/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.4287 - mean_absolute_error: 2.3592 - val_loss: 14.0786 - val_mean_absolute_error: 2.8219
+Epoch 5/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.3304 - mean_absolute_error: 2.3474 - val_loss: 13.3218 - val_mean_absolute_error: 2.6922
+Epoch 6/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.2818 - mean_absolute_error: 2.3396 - val_loss: 13.0026 - val_mean_absolute_error: 2.6608
+Epoch 7/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.2371 - mean_absolute_error: 2.3328 - val_loss: 13.8345 - val_mean_absolute_error: 2.7606
+Epoch 8/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.2269 - mean_absolute_error: 2.3303 - val_loss: 13.9406 - val_mean_absolute_error: 2.7502
+Epoch 9/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.2010 - mean_absolute_error: 2.3256 - val_loss: 13.3373 - val_mean_absolute_error: 2.7328
+Epoch 10/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.1980 - mean_absolute_error: 2.3256 - val_loss: 14.2186 - val_mean_absolute_error: 2.7752
+Epoch 11/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.1877 - mean_absolute_error: 2.3244 - val_loss: 15.1048 - val_mean_absolute_error: 2.8379
+Epoch 11: early stopping
+Train: 2.072, Test: 3.370
+5956/5956 ━━━━━━━━━━━━━━━━━━━━ 9s 1ms/step
+/usr/local/lib/python3.12/dist-packages/keras/src/layers/core/dense.py:106: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Epoch 1/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 113s 2ms/step - loss: 13.8321 - mean_absolute_error: 2.8122 - val_loss: 22.3978 - val_mean_absolute_error: 3.5373
+Epoch 2/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 103s 2ms/step - loss: 10.0866 - mean_absolute_error: 2.4484 - val_loss: 21.7761 - val_mean_absolute_error: 3.5451
+Epoch 3/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.5809 - mean_absolute_error: 2.3809 - val_loss: 20.1143 - val_mean_absolute_error: 3.5188
+Epoch 4/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.4056 - mean_absolute_error: 2.3561 - val_loss: 20.1661 - val_mean_absolute_error: 3.5340
+Epoch 5/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 103s 2ms/step - loss: 9.3427 - mean_absolute_error: 2.3474 - val_loss: 19.8993 - val_mean_absolute_error: 3.3677
+Epoch 6/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.2903 - mean_absolute_error: 2.3405 - val_loss: 20.5073 - val_mean_absolute_error: 3.6168
+Epoch 7/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.2638 - mean_absolute_error: 2.3357 - val_loss: 20.8843 - val_mean_absolute_error: 3.4755
+Epoch 8/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.2428 - mean_absolute_error: 2.3325 - val_loss: 20.3299 - val_mean_absolute_error: 3.4340
+Epoch 9/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.2621 - mean_absolute_error: 2.3332 - val_loss: 18.6811 - val_mean_absolute_error: 3.3221
+Epoch 10/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.2714 - mean_absolute_error: 2.3344 - val_loss: 22.6874 - val_mean_absolute_error: 3.7225
+Epoch 11/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.2916 - mean_absolute_error: 2.3349 - val_loss: 18.4297 - val_mean_absolute_error: 3.2570
+Epoch 12/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.2807 - mean_absolute_error: 2.3332 - val_loss: 16.5689 - val_mean_absolute_error: 3.1771
+Epoch 13/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.3032 - mean_absolute_error: 2.3361 - val_loss: 22.9720 - val_mean_absolute_error: 3.6925
+Epoch 14/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.3370 - mean_absolute_error: 2.3384 - val_loss: 19.4927 - val_mean_absolute_error: 3.4181
+Epoch 15/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.3407 - mean_absolute_error: 2.3383 - val_loss: 18.1338 - val_mean_absolute_error: 3.3103
+Epoch 16/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.3473 - mean_absolute_error: 2.3404 - val_loss: 19.3044 - val_mean_absolute_error: 3.4521
+Epoch 17/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.3815 - mean_absolute_error: 2.3435 - val_loss: 20.8049 - val_mean_absolute_error: 3.5767
+Epoch 18/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.4230 - mean_absolute_error: 2.3483 - val_loss: 16.4938 - val_mean_absolute_error: 3.2404
+Epoch 19/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.4892 - mean_absolute_error: 2.3553 - val_loss: 20.4068 - val_mean_absolute_error: 3.5448
+Epoch 20/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.5115 - mean_absolute_error: 2.3573 - val_loss: 21.4483 - val_mean_absolute_error: 3.4974
+Epoch 21/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.5551 - mean_absolute_error: 2.3625 - val_loss: 21.2173 - val_mean_absolute_error: 3.6225
+Epoch 22/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.6225 - mean_absolute_error: 2.3679 - val_loss: 21.7352 - val_mean_absolute_error: 3.5553
+Epoch 23/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.6625 - mean_absolute_error: 2.3737 - val_loss: 21.1156 - val_mean_absolute_error: 3.4458
+Epoch 24/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.7197 - mean_absolute_error: 2.3816 - val_loss: 22.3453 - val_mean_absolute_error: 3.4560
+Epoch 25/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.7149 - mean_absolute_error: 2.3809 - val_loss: 20.6564 - val_mean_absolute_error: 3.5201
+Epoch 26/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.7845 - mean_absolute_error: 2.3894 - val_loss: 20.2262 - val_mean_absolute_error: 3.4734
+Epoch 27/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 102s 2ms/step - loss: 9.8056 - mean_absolute_error: 2.3925 - val_loss: 22.8549 - val_mean_absolute_error: 3.6344
+Epoch 28/1000
+48242/48242 ━━━━━━━━━━━━━━━━━━━━ 101s 2ms/step - loss: 9.8209 - mean_absolute_error: 2.3963 - val_loss: 20.2542 - val_mean_absolute_error: 3.4720
+Epoch 28: early stopping
+Train: 2.191, Test: 3.025
+5956/5956 ━━━━━━━━━━━━━━━━━━━━ 9s 1ms/step
