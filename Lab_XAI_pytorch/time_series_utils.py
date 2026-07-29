@@ -50,7 +50,7 @@ def save_lstm_and_scalers(model, scalers_dict, save_dir="saved_lstm", model_name
     with open(scaler_path, "wb") as f:
         pickle.dump(scalers_dict, f)
         
-    print(f"Operation successfully completed!")
+    print(f"Operation completed successfully!")
     print(f"   - Model weights saved in: {model_path}")
     print(f"   - Scalers saved in:       {scaler_path}")
 
