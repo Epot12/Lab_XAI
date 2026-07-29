@@ -145,11 +145,11 @@ def plot_bivariate_trends(df, feature_x, target_y="TARGET_power", sample_size=50
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         # Save PNG
         png_path = os.path.join(save_path, f"{base_save_name}_{timestamp}.png")
-        g.savefig(png_path, dpi=600, bbox_inches='tight')
+        plt.savefig(png_path, dpi=600, bbox_inches='tight')
                                 
         # Save PDF
         pdf_path = os.path.join(save_path, f"{base_save_name}_{timestamp}.pdf")
-        g.savefig(pdf_path, dpi=600, bbox_inches='tight')
+        plt.savefig(pdf_path, dpi=600, bbox_inches='tight')
                                 
         print(f"Plots saved successfully as:\n- {png_path}\n- {pdf_path}")
     plt.show()
