@@ -6,19 +6,19 @@ from scipy import stats
 
 def analyze_target_distribution(y, save_path=None):
     """
-    Analisi statistica avanzata del target radar.
-    Valuta asimmetria, curtosi e testa l'ipotesi di log-normalità.
+    Advanced statistical analysis of the radar target.
+    Evaluates skewness and kurtosis, and tests the log-normality hypothesis.
     """
     sns.set_theme(style="whitegrid")
     fig, axes = plt.subplots(1, 2, figsize=(16, 5))
     
-    # Grafico 1: Distribuzione Lineare Originale
+    # Chart 1: original distribution
     sns.histplot(y, kde=True, ax=axes[0], color="#2C3E50", bins=100)
     axes[0].set_title(f"Target Distribution (Original)\nSkewness: {stats.skew(y):.2f} | Kurtosis: {stats.kurtosis(y):.2f}", fontsize=12)
     axes[0].set_xlabel("Peak Distorted Echo Power")
     
-    # Grafico 2: Distribuzione in Scala Logaritmica (Simil-dB)
-    # Evitiamo log(0) aggiungendo una costante minima se necessario
+    # Chart 2: logarithmic scale 
+    # Avoid log(0) by adding a small constant if necessary
     y_log = np.log10(y - np.min(y) + 1) if np.min(y) <= 0 else np.log10(y)
     
     sns.histplot(y_log, kde=True, ax=axes[1], color="#16A085", bins=100)
