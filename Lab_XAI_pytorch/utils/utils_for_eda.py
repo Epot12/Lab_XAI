@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 from scipy import stats
 
-def analyze_target_distribution(y, save_plot=False, base_save_name=None, save_dir="plots"):
+def analyze_target_distribution(y, save_plot=False, base_save_name="target_dist", save_dir="plots"):
     """
     Advanced statistical analysis of the radar target.
     Evaluates skewness and kurtosis, and tests the log-normality hypothesis.
@@ -45,8 +45,8 @@ def analyze_target_distribution(y, save_plot=False, base_save_name=None, save_di
 
 def analyze_sequential_dependency(y, max_lag=50, save_path=None):
     """
-    Calcola e plotta l'autocorrelazione del target per dimostrare
-    la natura sequenziale/temporale dei dati lungo le orbite.
+    Calculates and plots the autocorrelation of the target to demonstrate
+    the sequential/temporal nature of the data along the orbits.
     """
     acf = [1.0]
     for lag in range(1, max_lag + 1):
