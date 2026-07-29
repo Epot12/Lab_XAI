@@ -108,29 +108,29 @@ def plot_hierarchical_correlation(df_features, base_save_name="hier_corr", save_
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         # Save PNG
         png_path = os.path.join(save_path, f"{base_save_name}_{timestamp}.png")
-        plt.savefig(png_path, dpi=600, bbox_inches='tight')
+        g.savefig(png_path, dpi=600, bbox_inches='tight')
                         
         # Save PDF
         pdf_path = os.path.join(save_path, f"{base_save_name}_{timestamp}.pdf")
-        plt.savefig(pdf_path, dpi=600, bbox_inches='tight')
+        g.savefig(pdf_path, dpi=600, bbox_inches='tight')
                         
         print(f"Plots saved successfully as:\n- {png_path}\n- {pdf_path}")
     plt.show()
 
 
-def plot_bivariate_trends(df, feature_x, target_y="TARGET_power", sample_size=5000, save_path=None):
+def plot_bivariate_trends(df, feature_x, target_y="TARGET_power", sample_size=5000, base_save_name="biv_trends", save_path=None):
     """
-    Plotta la relazione tra una feature e il target usando un campionamento condizionato 
-    e un trend non parametrico per evidenziare comportamenti non lineari fisici.
+    Plots the relationship between a feature and the target using conditional sampling and a 
+    non-parametric trend to highlight physical non-linear behaviors.
     """
-    # Campionamento per non intasare la visualizzazione se il dataset ha milioni di righe
+    # Sampling to avoid cluttering the visualization if the dataset has millions of rows.
     df_sampled = df.sample(n=min(sample_size, len(df)), random_state=42)
     
     plt.figure(figsize=(10, 6))
-    # Scatter plot ad alta densità con trasparenza
+    # High-density scatter plot with transparency
     sns.scatterplot(data=df_sampled, x=feature_x, y=target_y, alpha=0.3, color="#34495E", edgecolor=None)
     
-    # Linea di trend non lineare (regolarizzata tramite una regressione polinomiale locale o GAM locale)
+    # Non-linear trend line (regularized via regression)
     sns.regplot(data=df_sampled, x=feature_x, y=target_y, scatter=False, color="#E74C3C", order=3, 
                 label="Non-linear Trend (Order 3)")
     
@@ -141,7 +141,17 @@ def plot_bivariate_trends(df, feature_x, target_y="TARGET_power", sample_size=50
     plt.grid(True, linestyle="--", alpha=0.5)
     
     if save_path:
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        os.makedirs(save_path, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        # Save PNG
+        png_path = os.path.join(save_path, f"{base_save_name}_{timestamp}.png")
+        g.savefig(png_path, dpi=600, bbox_inches='tight')
+                                
+        # Save PDF
+        pdf_path = os.path.join(save_path, f"{base_save_name}_{timestamp}.pdf")
+        g.savefig(pdf_path, dpi=600, bbox_inches='tight')
+                                
+        print(f"Plots saved successfully as:\n- {png_path}\n- {pdf_path}")
     plt.show()
 
 
