@@ -43,7 +43,7 @@ def analyze_target_distribution(y, save_plot=False, base_save_name="target_dist"
     plt.show()
 
 
-def analyze_sequential_dependency(y, max_lag=50, base_save_name="target_dist", save_path=None):
+def analyze_sequential_dependency(y, max_lag=50, base_save_name="seq_dep", save_path=None):
     """
     Calculates and plots the autocorrelation of the target to demonstrate
     the sequential/temporal nature of the data along the orbits.
@@ -80,15 +80,15 @@ def analyze_sequential_dependency(y, max_lag=50, base_save_name="target_dist", s
     plt.show()
 
 
-def plot_hierarchical_correlation(df_features, save_path=None):
+def plot_hierarchical_correlation(df_features, base_save_name="hier_corr", save_path=None):
     """
-    Genera una heatmap di correlazione accoppiata a un clustering gerarchico (Dendrogramma).
-    Identifica gruppi di feature fisiche ridondanti.
+    Generates a correlation heatmap combined with hierarchical clustering (dendrogram).
+    Identifies groups of redundant physical features.
     """
-    # Calcolo della correlazione di Spearman (gestisce relazioni non lineari monotoniche)
+    # Calculation of Spearman correlation (handles monotonic non-linear relationships)
     corr_matrix = df_features.corr(method='spearman')
     
-    # Generazione del Clustermap
+    # generating Clustermap
     g = sns.clustermap(
         corr_matrix, 
         cmap="coolwarm", 
@@ -104,7 +104,17 @@ def plot_hierarchical_correlation(df_features, save_path=None):
     plt.setp(g.ax_heatmap.get_xticklabels(), rotation=45, ha="right")
     
     if save_path:
-        g.savefig(save_path, dpi=300, bbox_inches='tight')
+        os.makedirs(save_path, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        # Save PNG
+        png_path = os.path.join(save_path, f"{base_save_name}_{timestamp}.png")
+        plt.savefig(png_path, dpi=600, bbox_inches='tight')
+                        
+        # Save PDF
+        pdf_path = os.path.join(save_path, f"{base_save_name}_{timestamp}.pdf")
+        plt.savefig(pdf_path, dpi=600, bbox_inches='tight')
+                        
+        print(f"Plots saved successfully as:\n- {png_path}\n- {pdf_path}")
     plt.show()
 
 
