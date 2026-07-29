@@ -2,9 +2,11 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
+from datetime import datetime
 from scipy import stats
 
-def analyze_target_distribution(y, save_path=None):
+def analyze_target_distribution(y, save_plot=False, base_save_name=None, save_dir="plots"):
     """
     Advanced statistical analysis of the radar target.
     Evaluates skewness and kurtosis, and tests the log-normality hypothesis.
@@ -26,8 +28,18 @@ def analyze_target_distribution(y, save_path=None):
     axes[1].set_xlabel("Log10(Peak Distorted Echo Power)")
     
     plt.tight_layout()
-    if save_path:
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+    if save_plot:
+        os.makedirs(save_dir, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        # Save PNG
+        png_path = os.path.join(save_dir, f"{base_save_name}_{timestamp}.png")
+        plt.savefig(png_path, dpi=600, bbox_inches='tight')
+        
+        # Save PDF
+        pdf_path = os.path.join(save_dir, f"{base_save_name}_{timestamp}.pdf")
+        plt.savefig(pdf_path, dpi=600, bbox_inches='tight')
+        
+        print(f"Plots saved successfully as:\n- {png_path}\n- {pdf_path}")
     plt.show()
 
 
