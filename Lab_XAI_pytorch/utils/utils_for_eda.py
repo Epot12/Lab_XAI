@@ -43,7 +43,7 @@ def analyze_target_distribution(y, save_plot=False, base_save_name="target_dist"
     plt.show()
 
 
-def analyze_sequential_dependency(y, max_lag=50, save_path=None):
+def analyze_sequential_dependency(y, max_lag=50, base_save_name="target_dist", save_path=None):
     """
     Calculates and plots the autocorrelation of the target to demonstrate
     the sequential/temporal nature of the data along the orbits.
@@ -60,13 +60,23 @@ def analyze_sequential_dependency(y, max_lag=50, save_path=None):
     plt.axhline(-1.96 / np.sqrt(len(y)), color="red", linestyle="--", alpha=0.5)
     
     plt.title("Autocorrelation Function (ACF) of Radar Echo Power", fontsize=13, fontweight='bold')
-    plt.xlabel("Lag (Distanza in campioni temporali)")
+    plt.xlabel("Lag (Distance in time samples)")
     plt.ylabel("Autocorrelation Coefficient")
     plt.legend()
     plt.grid(True, linestyle=":", alpha=0.6)
     
     if save_path:
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        os.makedirs(save_path, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        # Save PNG
+        png_path = os.path.join(save_path, f"{base_save_name}_{timestamp}.png")
+        plt.savefig(png_path, dpi=600, bbox_inches='tight')
+                
+        # Save PDF
+        pdf_path = os.path.join(save_path, f"{base_save_name}_{timestamp}.pdf")
+        plt.savefig(pdf_path, dpi=600, bbox_inches='tight')
+                
+        print(f"Plots saved successfully as:\n- {png_path}\n- {pdf_path}")
     plt.show()
 
 
