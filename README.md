@@ -8,3 +8,13 @@ Questo Project Work si concentra sull'utilizzo di tecniche di Explainable Artifi
 *   **Training delle neural networks con F_10_7 index:** Addestramento dei migliori modelli risultanti dagli studi precedenti considerando anche l'indice F_10_7 come feature e successiva interpretazione con SHAP (metti reference).
 *   **Training Explainable Boosting Machines (EBMs):** addestramento EBMs con anche F_10_7 index come feature e confronto con le reti neurali.
 *   **Predizione di F_10_7 index e addestramento in cascata delle reti neurali:** utilizzo di predittori (regressione lineare e LSTM) per prevedere F_10_7 index e valutazione delle performance delle reti neurali sui dati con tale feature al posto del valore reale di F_10_7 index.
+
+## Exploratory Data Analysis
+
+I dati a disposizione sono in formato csv, in cui ogni riga del file corrisponde ad una rilevazione (un sample) ed ogni colonna ad una feature. Per una trattazione più approfondita sull'assemblaggio del dataset leggere in (ref articolo prof Lippi).
+La EDA portata avanti in questo progetto si focalizza sull'F_10_7 index, allo scopo di investigare la natura dei dati target per meglio implementare il successivo training dei modelli.
+Inizialmente è stata analizzata la forma della distribuzione dell'F_10_7 index, plottando la distribuzione originale dei dati (immagine sinistra Figura 1) contrapposta alla sua trasformazione con $\log_{10}$.
+
+<p align="center">
+  <img src="Lab_XAI_pytorch/plots/target_dist_20260729_191055.pdf" alt="Figura 1: Analisi Target" width="700">
+</p>
