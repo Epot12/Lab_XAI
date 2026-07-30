@@ -15,6 +15,4 @@ I dati a disposizione sono in formato csv, in cui ogni riga del file corrisponde
 La EDA portata avanti in questo progetto si focalizza sull'F_10_7 index, allo scopo di investigare la natura dei dati target per meglio implementare il successivo training dei modelli.
 Inizialmente è stata analizzata la forma della distribuzione dell'F_10_7 index, plottando la distribuzione originale dei dati (immagine sinistra Figura 1) contrapposta alla sua trasformazione con $\log_{10}$.
 
-<p align="center">
-  <img src="Lab_XAI_pytorch/plots/target_dist_20260729_191055.pdf" alt="Figura 1: Analisi Target" width="700">
-</p>
+![Figura 1: Distribuzione della variabile Target - Peak Distorted Echo Power](Lab_XAI_pytorch/plots/target_dist_20260729_191055.pdf)
