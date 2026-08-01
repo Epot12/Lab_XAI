@@ -17,7 +17,7 @@ Aprire il terminale e digitare:
 
 ```bash
 git clone https://github.com/Epot12/Lab_XAI.git
-cd Lab_XAI_pytorch
+cd Lab_XAI/Lab_XAI_pytorch
 ```
 
 ---
@@ -32,7 +32,7 @@ curl -LsSf [https://astral.sh/uv/install.sh](https://astral.sh/uv/install.sh) | 
 
 ### Windows (tramite PowerShell)
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm [https://astral.sh/uv/install.ps1](https://astral.sh/uv/install.ps1) | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 ### Sincronizzazione delle dipendenze
