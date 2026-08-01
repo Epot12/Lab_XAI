@@ -9,3 +9,52 @@ Questo Project Work si concentra sull'utilizzo di tecniche di Explainable Artifi
 
 ## Requirements
 Il progetto sfrutta uv come environment manager. 
+## 1. Clonare il repository
+
+Per prima cosa, scaricare una copia locale del progetto clonando il repository e accedere alla cartella di lavoro principale. 
+
+Aprire il terminale e digitare:
+
+```bash
+git clone https://github.com/Epot12/Lab_XAI.git
+cd Lab_XAI_pytorch
+```
+
+---
+
+## 2. Installazione di `uv` e configurazione dell'ambiente
+Assicurarsi di trovarsi all'interno della cartella `Lab_XAI_pytorch`. Scegliere il comando di installazione in base al sistema operativo:
+
+### macOS e Linux
+```bash
+curl -LsSf [https://astral.sh/uv/install.sh](https://astral.sh/uv/install.sh) | sh
+```
+
+### Windows (tramite PowerShell)
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm [https://astral.sh/uv/install.ps1](https://astral.sh/uv/install.ps1) | iex"
+```
+
+### Sincronizzazione delle dipendenze
+Una volta installato `uv`, ricreare l'ambiente virtuale con le librerie esatte richieste dal progetto. Assicurandosi di essere ancora dentro la cartella `Lab_XAI_pytorch`, eseguire:
+
+```bash
+uv sync
+```
+Questo comando leggerà automaticamente il file `uv.lock` presente nel repository, creerà un ambiente virtuale isolato (nella cartella `.venv`) e installerà tutte le dipendenze con le versioni corrette.
+
+---
+
+## 3. Eseguire i Notebook
+
+Una volta completata la sincronizzazione, è possibile eseguire i notebook Jupyter. 
+
+Utilizzando `uv`, non è necessario attivare manualmente l'ambiente virtuale; il gestore si occuperà di lanciare Jupyter utilizzando le librerie corrette. Il comando seguente è universale e funziona perfettamente da terminale su **Windows**, **Linux** e **macOS**:
+
+```bash
+uv run jupyter notebook
+```
+
+*(Nota: se si preferisce l'interfaccia più moderna di JupyterLab, è possibile eseguire invece `uv run jupyter lab`).*
+
+Il comando aprirà automaticamente un pannello nel browser web predefinito. Da lì è possibile navigare nei file del progetto, aprire i file con estensione `.ipynb` ed eseguire l'analisi o l'addestramento dei modelli.

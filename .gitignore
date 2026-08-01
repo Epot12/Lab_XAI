@@ -154,6 +154,7 @@ SHAP_results_*/
 *.jpeg
 *.svg
 !Lab_XAI_REPORT.pdf
+!MARSIS_historical_dataset.txt
 
 # === Heavy Binaries ===
 *.keras
