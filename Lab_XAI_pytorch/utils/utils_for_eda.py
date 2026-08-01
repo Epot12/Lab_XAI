@@ -43,7 +43,7 @@ def analyze_target_distribution(y, save_plot=False, base_save_name="target_dist"
     plt.show()
 
 
-def analyze_sequential_dependency(y, max_lag=50, base_save_name="seq_dep", save_path=None):
+def analyze_sequential_dependency(y, title="Autocorrelation Function (ACF)", max_lag=50, base_save_name="seq_dep", save_path=None):
     """
     Calculates and plots the autocorrelation of the target to demonstrate
     the sequential/temporal nature of the data along the orbits.
@@ -59,7 +59,7 @@ def analyze_sequential_dependency(y, max_lag=50, base_save_name="seq_dep", save_
     plt.axhline(1.96 / np.sqrt(len(y)), color="red", linestyle="--", alpha=0.5, label="95% Confidence Interval")
     plt.axhline(-1.96 / np.sqrt(len(y)), color="red", linestyle="--", alpha=0.5)
     
-    plt.title("Autocorrelation Function (ACF) of Radar Echo Power", fontsize=13, fontweight='bold')
+    plt.title(title, fontsize=13, fontweight='bold')
     plt.xlabel("Lag (Distance in time samples)")
     plt.ylabel("Autocorrelation Coefficient")
     plt.legend()
