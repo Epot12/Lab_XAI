@@ -58,6 +58,5 @@ Utilizzando `uv`, non è necessario attivare manualmente l'ambiente virtuale; il
 uv run jupyter notebook nome_notebook.ipynb
 ```
 
-*(Nota: se si preferisce l'interfaccia più moderna di JupyterLab, è possibile eseguire invece `uv run jupyter lab nome_notebook.ipynb`).*
 
 Il comando aprirà automaticamente un pannello nel browser web predefinito. Da lì è possibile navigare nei file del progetto, aprire i file con estensione `.ipynb` ed eseguire l'analisi o l'addestramento dei modelli.
