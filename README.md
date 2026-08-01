@@ -27,7 +27,7 @@ Assicurarsi di trovarsi all'interno della cartella `Lab_XAI_pytorch`. Scegliere 
 
 ### macOS e Linux
 ```bash
-curl -LsSf [https://astral.sh/uv/install.sh](https://astral.sh/uv/install.sh) | sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 ### Windows (tramite PowerShell)
