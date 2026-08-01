@@ -1,18 +1,11 @@
 # Project work di Explainable Artificial Intelligence (XAI)
-## Introduction 
 
-Questo Project Work si concentra sull'utilizzo di tecniche di Explainable Artificial Intelligence (XAI) nel contesto delle Space Observations. Nello specifico, le osservazioni considerate in questo progetto provengono dal radar MARSIS installato sulla sonda Mars Express, nel contesto di una missione ESA (European Space Agency) volta all'analisi di Marte, con lo scopo di individuare elementi adatti alla vita umana, come la presenza di acqua. A questo proposito, il radar viene usato per l'invio di onde elettromagnetiche che, una volta riflesse dalla superficie marziana, se analizzate permettano di comprenderne la composizione. Dati i vincoli intrinsechi della missione, le risorse a disposizione per la memorizzazione e l'elaborazione dei dati sono molto contenute. La finestra temporale quotidiana per la rilevazione dati ammonta a circa 2 minuti, pertanto è fondamentale ottimizzare lo scheduling delle rilevazioni in base alle condizioni che più verosimilmente rendano favorevole tale operazione. In questo contesto, in (metti citazioni articoli Lippi) vengono impiegate tecniche di Intelligenza Artificiale (AI) per analizzare le condizioni sperimentali al contorno e predire la qualità del segnale radio in istanti futuri, allo scopo di usare tali predizioni per poi programmare le rilevazioni future in modo ottimizzato. Gli studi citati introducono poi anche l'uso di tecniche di XAI per spiegare su quali features si basino le predizioni dell'AI, allo scopo di rendere gli output del modello interpretabili da  esperti del settore. Questo Project Work si focalizza sullo studio di una feature in particolare, l'Indice di intensità del Flusso Solare (F 10_7 index). Negli studi citati questa feature non è stata considerata poiché tradizionalmente considerata impredicibile. Secondo la fisica tale feature ha però una grande importanza nei risultati di qualità del segnale radio, in contesti spaziali come quello qui in esame. A questo proposito questo progetto introduce tale feature all'interno del sistema sviluppato in (articoli prof Lippi) e ne valuta l'impatto. Nello specifico, il lavoro seguente si articola in questo modo:
+Questo Project Work si concentra sull'utilizzo di tecniche di Explainable Artificial Intelligence (XAI) nel contesto delle Space Observations. Nello specifico, le osservazioni considerate in questo progetto provengono dal radar MARSIS installato sulla sonda Mars Express, nel contesto di una missione ESA (European Space Agency) volta all'analisi di Marte, con lo scopo di individuare elementi adatti alla vita umana, come la presenza di acqua. A questo proposito, il radar viene usato per l'invio di onde elettromagnetiche che, una volta riflesse dalla superficie marziana, se analizzate permettano di comprenderne la composizione. 
 
+## Organizzazione del repository
+- **Lab_XAI_REPORT.pdf:** relazione sul progetto.
+- **Lab_XAI_pytorch:** cartella contenente main (dove si trovano gli esperimenti sull'MLP), flux_pred_main.ipynb (predizione indice del flusso solare) e ebms_main.ipynb (esperimenti sulle EBM), oltre alle relative utils.
+- **Lab_XAI_tensorflow:** contenente il codice originale Tensorflow/Keras.
 
-*   **Exploratory Data Analysis (EDA):** Analisi esplorativa dei dati (EDA) ed individuazione di tendenze ed eventuali pattern. 
-*   **Training delle neural networks con F_10_7 index:** Addestramento dei migliori modelli risultanti dagli studi precedenti considerando anche l'indice F_10_7 come feature e successiva interpretazione con SHAP (metti reference).
-*   **Training Explainable Boosting Machines (EBMs):** addestramento EBMs con anche F_10_7 index come feature e confronto con le reti neurali.
-*   **Predizione di F_10_7 index e addestramento in cascata delle reti neurali:** utilizzo di predittori (regressione lineare e LSTM) per prevedere F_10_7 index e valutazione delle performance delle reti neurali sui dati con tale feature al posto del valore reale di F_10_7 index.
-
-## Exploratory Data Analysis
-
-I dati a disposizione sono in formato csv, in cui ogni riga del file corrisponde ad una rilevazione (un sample) ed ogni colonna ad una feature. Per una trattazione più approfondita sull'assemblaggio del dataset leggere in (ref articolo prof Lippi).
-La EDA portata avanti in questo progetto si focalizza sull'F_10_7 index, allo scopo di investigare la natura dei dati target per meglio implementare il successivo training dei modelli.
-Inizialmente è stata analizzata la forma della distribuzione dell'F_10_7 index, plottando la distribuzione originale dei dati (immagine sinistra Figura 1) contrapposta alla sua trasformazione con $\log_{10}$.
-
-![Figura 1: Distribuzione della variabile Target - Peak Distorted Echo Power](Lab_XAI_pytorch/plots/target_dist_20260729_191055.png)
+## Requirements
+Il progetto sfrutta uv come environment manager. 
