@@ -155,7 +155,7 @@ SHAP_results_*/
 *.svg
 !Lab_XAI_REPORT.pdf
 !MARSIS_historical_dataset.txt
-!orbit_to_remove.txt
+!orbit_to_remove
 
 # === Heavy Binaries ===
 *.keras
