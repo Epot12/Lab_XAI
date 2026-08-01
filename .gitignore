@@ -153,6 +153,7 @@ SHAP_results_*/
 *.jpg
 *.jpeg
 *.svg
+!Lab_XAI_REPORT.pdf
 
 # === Heavy Binaries ===
 *.keras
