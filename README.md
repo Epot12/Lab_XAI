@@ -45,7 +45,10 @@ Questo comando leggerà automaticamente il file `uv.lock` presente nel repositor
 
 ---
 
-## 3. Eseguire i Notebook
+## 3. Scaricare i dati
+Per ottenere il dataset, scaricare i dati dal link presente nel file Data/MARSIS_historical_dataset.txt e inserire il file csv così ottenuto all'interno della cartella Data.
+
+## 4. Eseguire i Notebook
 
 Una volta completata la sincronizzazione, è possibile eseguire i notebook Jupyter. 
 
