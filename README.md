@@ -55,9 +55,9 @@ Una volta completata la sincronizzazione, è possibile eseguire i notebook Jupyt
 Utilizzando `uv`, non è necessario attivare manualmente l'ambiente virtuale; il gestore si occuperà di lanciare Jupyter utilizzando le librerie corrette. Il comando seguente è universale e funziona perfettamente da terminale su **Windows**, **Linux** e **macOS**:
 
 ```bash
-uv run jupyter notebook
+uv run jupyter notebook nome_notebook.ipynb
 ```
 
-*(Nota: se si preferisce l'interfaccia più moderna di JupyterLab, è possibile eseguire invece `uv run jupyter lab`).*
+*(Nota: se si preferisce l'interfaccia più moderna di JupyterLab, è possibile eseguire invece `uv run jupyter lab nome_notebook.ipynb`).*
 
 Il comando aprirà automaticamente un pannello nel browser web predefinito. Da lì è possibile navigare nei file del progetto, aprire i file con estensione `.ipynb` ed eseguire l'analisi o l'addestramento dei modelli.
