@@ -5,7 +5,7 @@ Questo Project Work si concentra sull'utilizzo di tecniche di Explainable Artifi
 ## Organizzazione del repository
 - **Lab_XAI_REPORT.pdf:** relazione sul progetto.
 - **Lab_XAI_pytorch:** cartella contenente main (dove si trovano gli esperimenti sull'MLP), flux_pred_main.ipynb (predizione indice del flusso solare) e ebms_main.ipynb (esperimenti sulle EBM), oltre alle relative utils.
-- **Lab_XAI_tensorflow:** contenente il codice originale Tensorflow/Keras.
+- **Lab_XAI_tensorflow:** contenente il codice originale Tensorflow/Keras, da eseguire su Google Colab.
 
 ## Requirements
 Il progetto sfrutta uv come environment manager. 
