@@ -1,20 +1,24 @@
-# Project work di Explainable Artificial Intelligence (XAI)
+# Explainable Artificial Intelligence (XAI) Project Work
 
-Questo Project Work si concentra sull'utilizzo di tecniche di Explainable Artificial Intelligence (XAI) nel contesto delle Space Observations. Nello specifico, le osservazioni considerate in questo progetto provengono dal radar MARSIS installato sulla sonda della missione ESA (European Space Agency) Mars Express, volta all'analisi di Marte, con lo scopo di individuare elementi adatti alla vita umana, come la presenza di acqua. A questo proposito, il radar viene usato per l'invio di onde elettromagnetiche che, una volta riflesse dalla superficie marziana, se analizzate permettono di comprenderne la composizione. 
+This project focuses on the application of Explainable Artificial Intelligence (XAI) techniques in the field of space observation. Specifically, the observations considered in this project are acquired by the MARSIS radar onboard the European Space Agency’s (ESA) Mars Express spacecraft, a mission dedicated to the exploration and analysis of Mars, with the aim of identifying conditions that may be suitable for human life, such as the presence of water.
+
+To this end, the radar emits electromagnetic waves that are reflected by the Martian surface. By analyzing these reflected signals, it is possible to gain insights into the composition of the planet’s surface and subsurface.
 
 ## Organizzazione del repository
-- **Lab_XAI_REPORT.pdf:** relazione sul progetto.
-- **Lab_XAI_pytorch:** cartella contenente main (dove si trovano gli esperimenti sull'MLP), flux_pred_main.ipynb (predizione indice del flusso solare) e ebms_main.ipynb (esperimenti sulle EBM), oltre alle relative utils.
-- **Lab_XAI_tensorflow:** contenente il codice originale Tensorflow/Keras, da eseguire su Google Colab.
+## Repository Structure
+- **Lab_XAI_REPORT.pdf:** project report.
+- **Lab_XAI_pytorch:** the folder contains the main script (which includes the MLP experiments), flux_pred_main.ipynb (solar flux index prediction), and ebms_main.ipynb (experiments with Explainable Boosting Machines, or EBMs), along with their corresponding utility modules.
+- **Lab_XAI_tensorflow:** contains the original TensorFlow/Keras code, intended to be run in Google Colab.
 
 ## Requirements
-Il progetto sfrutta uv come environment manager. 
-## 1. Clonare il repository
+The project uses uv as its Python environment and package manager. 
+## 1. Clone the Repository
 
-Per prima cosa, scaricare una copia locale del progetto clonando il repository e accedere alla cartella di lavoro principale. 
 
-Aprire il terminale e digitare:
+First, create a local copy of the project by cloning the repository, then navigate to the main project directory.
 
+
+Open the terminal and enter the following command:
 ```bash
 git clone https://github.com/Epot12/Lab_XAI.git
 cd Lab_XAI/Lab_XAI_pytorch
@@ -22,41 +26,45 @@ cd Lab_XAI/Lab_XAI_pytorch
 
 ---
 
-## 2. Installazione di `uv` e configurazione dell'ambiente
-Assicurarsi di trovarsi all'interno della cartella `Lab_XAI_pytorch`. Scegliere il comando di installazione in base al sistema operativo:
+## 2. Installing `uv` and setting up the environment
+Make sure you are inside the Lab_XAI_pytorch directory. Select the appropriate installation command based on your operating system:
 
-### macOS e Linux
+### macOS and Linux
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### Windows (tramite PowerShell)
+### Windows (using PowerShell)
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-### Sincronizzazione delle dipendenze
-Una volta installato `uv`, ricreare l'ambiente virtuale con le librerie esatte richieste dal progetto. Assicurandosi di essere ancora dentro la cartella `Lab_XAI_pytorch`, eseguire:
+### Synchronizing dependencies
+
+Once `uv` has been installed, recreate the virtual environment with the exact package versions required by the project. Make sure you are still inside the `Lab_XAI_pytorch` directory, then run:
 
 ```bash
 uv sync
 ```
-Questo comando leggerà automaticamente il file `uv.lock` presente nel repository, creerà un ambiente virtuale isolato (nella cartella `.venv`) e installerà tutte le dipendenze con le versioni corrette.
+
+This command will automatically read the `uv.lock` file included in the repository, create an isolated virtual environment (in the `.venv` directory), and install all the required dependencies with their exact specified versions.
 
 ---
 
-## 3. Scaricare i dati
-Per ottenere il dataset, scaricare i dati dal link presente nel file Data/MARSIS_historical_dataset.txt e inserire il file csv così ottenuto all'interno della cartella Data.
+## 3. Downloading the dataset
 
-## 4. Eseguire i Notebook
+To obtain the dataset, download the data using the link provided in `Data/MARSIS_historical_dataset.txt`. Then, place the downloaded CSV file inside the `Data` directory.
 
-Una volta completata la sincronizzazione, è possibile eseguire i notebook Jupyter. 
+## 4. Running the notebooks
 
-Utilizzando `uv`, non è necessario attivare manualmente l'ambiente virtuale; il gestore si occuperà di lanciare Jupyter utilizzando le librerie corrette. Il comando seguente è universale e funziona perfettamente da terminale su **Windows**, **Linux** e **macOS**:
+Once the dependency synchronization is complete, the Jupyter notebooks can be executed. 
+
+When using `uv`, there is no need to manually activate the virtual environment. The package manager automatically launches Jupyter using the correct dependencies. The following command is cross-platform and works seamlessly from the terminal on **Windows**, **Linux**, and **macOS**:
 
 ```bash
 uv run jupyter notebook nome_notebook.ipynb
 ```
 
 
-Il comando aprirà automaticamente un pannello nel browser web predefinito. Da lì è possibile navigare nei file del progetto, aprire i file con estensione `.ipynb` ed eseguire l'analisi o l'addestramento dei modelli.
+
+The command will automatically open a Jupyter interface in your default web browser. From there, you can navigate through the project files, open `.ipynb` notebooks, and run the analyses or train the models.
