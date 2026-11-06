@@ -4,7 +4,6 @@ This project focuses on the application of Explainable Artificial Intelligence (
 
 To this end, the radar emits electromagnetic waves that are reflected by the Martian surface. By analyzing these reflected signals, it is possible to gain insights into the composition of the planet’s surface and subsurface.
 
-## Organizzazione del repository
 ## Repository Structure
 - **Lab_XAI_REPORT.pdf:** project report.
 - **Lab_XAI_pytorch:** the folder contains the main script (which includes the MLP experiments), flux_pred_main.ipynb (solar flux index prediction), and ebms_main.ipynb (experiments with Explainable Boosting Machines, or EBMs), along with their corresponding utility modules.
