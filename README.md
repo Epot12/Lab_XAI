@@ -61,7 +61,7 @@ Once the dependency synchronization is complete, the Jupyter notebooks can be ex
 When using `uv`, there is no need to manually activate the virtual environment. The package manager automatically launches Jupyter using the correct dependencies. The following command is cross-platform and works seamlessly from the terminal on **Windows**, **Linux**, and **macOS**:
 
 ```bash
-uv run jupyter notebook nome_notebook.ipynb
+uv run jupyter notebook notebook_name.ipynb
 ```
 
 
