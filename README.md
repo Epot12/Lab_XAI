@@ -66,4 +66,4 @@ uv run jupyter notebook notebook_name.ipynb
 
 
 
-The command will automatically open a Jupyter interface in your default web browser. From there, you can navigate through the project files, open `.ipynb` notebooks, and run the analyses or train the models.
+The command will automatically open a Jupyter interface in your default web browser. From there, you can navigate through the project files, open `.ipynb` notebooks and run the analyses or train the models.
